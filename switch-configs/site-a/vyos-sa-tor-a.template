@@ -2,22 +2,27 @@ configure
 set service lldp interface all
 set service ssh port 22
 set service ssh listen-address 0.0.0.0
+set system domain-search domain bmrf.io
+set system ntp server time.bmrf.io
+set system domain-name bmrf.io
+set system name-server 172.16.11.4
+set system name-server 172.16.11.5
 set system host-name vyos-sa-tor-a
 set interfaces ethernet eth0 address '2.0.1.6/30'
 set interfaces ethernet eth0 description 'ToR-A to Spine-A Uplink'
-set interfaces ethernet eth0 mtu '1700'
-set interfaces ethernet eth1 mtu '1700'
+set interfaces ethernet eth0 mtu '9000'
+set interfaces ethernet eth1 mtu '9000'
 set interfaces ethernet eth1 vif 100 description 'ToR-A to NSX Edge Downlink'
-set interfaces ethernet eth1 vif 100 mtu 1700
+set interfaces ethernet eth1 vif 100 mtu 9000
 set interfaces ethernet eth1 vif 100 address '10.10.100.1/28' 
 set interfaces ethernet eth1 vif 14 description 'ToR-A VRRP Edge RTEP'
-set interfaces ethernet eth1 vif 14 mtu 1700
+set interfaces ethernet eth1 vif 14 mtu 9000
 set interfaces ethernet eth1 vif 14 address '172.16.14.2/24' 
 set interfaces ethernet eth1 vif 15 description 'ToR-A VRRP ESXi TEP'
-set interfaces ethernet eth1 vif 15 mtu 1700
+set interfaces ethernet eth1 vif 15 mtu 9000
 set interfaces ethernet eth1 vif 15 address '172.16.15.2/24' 
 set interfaces ethernet eth1 vif 16 description 'ToR-A VRRP Edge TEP'
-set interfaces ethernet eth1 vif 16 mtu 1700
+set interfaces ethernet eth1 vif 16 mtu 9000
 set interfaces ethernet eth1 vif 16 address '172.16.16.2/24' 
 set high-availability vrrp group sa-edge-rtep interface eth1.14
 set high-availability vrrp group sa-edge-rtep vrid 14
