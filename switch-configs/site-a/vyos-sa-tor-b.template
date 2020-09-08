@@ -14,7 +14,7 @@ set interfaces ethernet eth0 mtu '9000'
 set interfaces ethernet eth1 mtu '9000'
 set interfaces ethernet eth1 vif 101 description 'ToR-B to NSX Edge Downlink'
 set interfaces ethernet eth1 vif 101 mtu 9000
-set interfaces ethernet eth1 vif 101 address '10.10.100.1/28' 
+set interfaces ethernet eth1 vif 101 address '10.10.101.1/28' 
 set interfaces ethernet eth1 vif 14 description 'ToR-B VRRP Edge RTEP'
 set interfaces ethernet eth1 vif 14 mtu 9000
 set interfaces ethernet eth1 vif 14 address '172.16.14.3/24' 
