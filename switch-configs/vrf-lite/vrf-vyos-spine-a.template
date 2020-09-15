@@ -1,0 +1,35 @@
+configure
+set service lldp interface all
+set service ssh port 22
+set service ssh listen-address 0.0.0.0
+set system domain-search domain bmrf.io
+set system ntp server time.bmrf.io
+set system domain-name bmrf.io
+set system name-server 172.16.11.4
+set system name-server 172.16.11.5
+set system host-name vrf-vyos-spine-a
+set interfaces ethernet eth0 address '4.0.1.2/30'
+set interfaces ethernet eth0 description 'Spine-A to WAN Uplink'
+set interfaces ethernet eth0 mtu '9000'
+set interfaces ethernet eth1 mtu '9000'
+set interfaces ethernet eth1 description 'Spine-A to ToR-A Routed Link'
+set interfaces ethernet eth1 address '4.0.1.5/30' 
+set interfaces ethernet eth2 mtu '9000'
+set interfaces ethernet eth2 description 'Spine-A to ToR-B Routed Link'
+set interfaces ethernet eth2 address '4.0.1.9/30' 
+set protocols bfd peer '4.0.1.1'
+set protocols bfd peer '4.0.1.6'
+set protocols bfd peer '4.0.1.10'
+set protocols bgp 65300 address-family ipv4-unicast redistribute connected
+set protocols bgp 65300 neighbor 4.0.1.1 remote-as 65000
+set protocols bgp 65300 neighbor 4.0.1.1 bfd
+set protocols bgp 65300 neighbor 4.0.1.6 remote-as 65310
+set protocols bgp 65300 neighbor 4.0.1.6 bfd
+set protocols bgp 65300 neighbor 4.0.1.6 address-family ipv4-unicast default-originate
+set protocols bgp 65300 neighbor 4.0.1.10 remote-as 65311
+set protocols bgp 65300 neighbor 4.0.1.10 bfd
+set protocols bgp 65300 neighbor 4.0.1.10 address-family ipv4-unicast default-originate
+set protocols bgp 65300 parameters bestpath as-path multipath-relax
+commit
+save
+exit

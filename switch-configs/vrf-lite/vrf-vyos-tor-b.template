@@ -1,0 +1,32 @@
+configure
+set service lldp interface all
+set service ssh port 22
+set service ssh listen-address 0.0.0.0
+set system domain-search domain bmrf.io
+set system ntp server time.bmrf.io
+set system domain-name bmrf.io
+set system name-server 172.16.11.4
+set system name-server 172.16.11.5
+set system host-name vrf-vyos-tor-b
+set interfaces ethernet eth0 address '4.0.1.10/30'
+set interfaces ethernet eth0 description 'ToR-A to Spine-A Uplink'
+set interfaces ethernet eth0 mtu '9000'
+set interfaces ethernet eth1 mtu '9000'
+set interfaces ethernet eth1 vif 121 description 'ToR-B to NSX Edge Downlink'
+set interfaces ethernet eth1 vif 121 mtu 9000
+set interfaces ethernet eth1 vif 121 address '10.10.121.1/28' 
+set protocols bfd peer '4.0.1.9'
+set protocols bfd peer '10.10.121.2'
+set protocols bfd peer '10.10.121.3'
+set protocols bgp 65311 neighbor 2.0.1.9 remote-as 65100
+set protocols bgp 65311 neighbor 2.0.1.9 bfd
+set protocols bgp 65311 neighbor 10.10.121.2 remote-as 65120
+set protocols bgp 65311 neighbor 10.10.121.2 bfd
+set protocols bgp 65311 neighbor 10.10.121.2 address-family ipv4-unicast default-originate
+set protocols bgp 65311 neighbor 10.10.121.3 remote-as 65120
+set protocols bgp 65311 neighbor 10.10.121.3 bfd
+set protocols bgp 65311 neighbor 10.10.121.3 address-family ipv4-unicast default-originate
+set protocols bgp 65311 parameters bestpath as-path multipath-relax
+commit
+save
+exit
