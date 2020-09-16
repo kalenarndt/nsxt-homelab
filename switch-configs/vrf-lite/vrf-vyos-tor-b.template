@@ -18,7 +18,8 @@ set interfaces ethernet eth1 vif 121 address '10.10.121.1/28'
 set protocols bfd peer '4.0.1.9'
 set protocols bfd peer '10.10.121.2'
 set protocols bfd peer '10.10.121.3'
-set protocols bgp 65311 neighbor 2.0.1.9 remote-as 65100
+set protocols bgp 65311 address-family ipv4-unicast redistribute connected
+set protocols bgp 65311 neighbor 2.0.1.9 remote-as 65300
 set protocols bgp 65311 neighbor 2.0.1.9 bfd
 set protocols bgp 65311 neighbor 10.10.121.2 remote-as 65120
 set protocols bgp 65311 neighbor 10.10.121.2 bfd
