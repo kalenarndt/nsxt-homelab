@@ -8,23 +8,33 @@ set system domain-name bmrf.io
 set system name-server 172.16.11.4
 set system name-server 172.16.11.5
 set system host-name vyos-sa-tor-a
-set interfaces ethernet eth0 address '2.0.1.6/30'
-set interfaces ethernet eth0 description 'ToR-A to Spine-A Uplink'
-set interfaces ethernet eth0 mtu '9000'
+set system login user vyos authentication plaintext-password VMware1!
+set vrf name oob-mgmt description "Out of Band Management Interface"
+set vrf name oob-mgmt table 101
+set vrf bind-to-all
+set interfaces ethernet eth0 mtu 1500
+set interfaces ethernet eth0 vif 11 description "Out of Band Management VLAN"
+set interfaces ethernet eth0 vif 11 mtu 1500
+set interfaces ethernet eth0 vif 11 vrf oob-mgmt
+set interfaces ethernet eth0 vif 11 address 172.16.11.32/24
+set protocols vrf oob-mgmt static route 0.0.0.0/0 next-hop 172.16.11.1 next-hop-interface eth0.11
+set interfaces ethernet eth1 address '2.0.1.6/30'
+set interfaces ethernet eth1 description 'ToR-A to Spine-A Uplink'
 set interfaces ethernet eth1 mtu '9000'
-set interfaces ethernet eth1 vif 100 description 'ToR-A to NSX Edge Downlink'
-set interfaces ethernet eth1 vif 100 mtu 9000
-set interfaces ethernet eth1 vif 100 address '10.10.100.1/28' 
-set interfaces ethernet eth1 vif 14 description 'ToR-A VRRP Edge RTEP'
-set interfaces ethernet eth1 vif 14 mtu 9000
-set interfaces ethernet eth1 vif 14 address '172.16.14.2/24' 
-set interfaces ethernet eth1 vif 15 description 'ToR-A VRRP ESXi TEP'
-set interfaces ethernet eth1 vif 15 mtu 9000
-set interfaces ethernet eth1 vif 15 address '172.16.15.2/24' 
-set interfaces ethernet eth1 vif 16 description 'ToR-A VRRP Edge TEP'
-set interfaces ethernet eth1 vif 16 mtu 9000
-set interfaces ethernet eth1 vif 16 address '172.16.16.2/24' 
-set high-availability vrrp group sa-edge-rtep interface eth1.14
+set interfaces ethernet eth2 mtu '9000'
+set interfaces ethernet eth2 vif 100 description 'ToR-A to NSX Edge Downlink'
+set interfaces ethernet eth2 vif 100 mtu 9000
+set interfaces ethernet eth2 vif 100 address '10.10.100.1/28' 
+set interfaces ethernet eth2 vif 14 description 'ToR-A VRRP Edge RTEP'
+set interfaces ethernet eth2 vif 14 mtu 9000
+set interfaces ethernet eth2 vif 14 address '172.16.14.2/24' 
+set interfaces ethernet eth2 vif 15 description 'ToR-A VRRP ESXi TEP'
+set interfaces ethernet eth2 vif 15 mtu 9000
+set interfaces ethernet eth2 vif 15 address '172.16.15.2/24' 
+set interfaces ethernet eth2 vif 16 description 'ToR-A VRRP Edge TEP'
+set interfaces ethernet eth2 vif 16 mtu 9000
+set interfaces ethernet eth2 vif 16 address '172.16.16.2/24' 
+set high-availability vrrp group sa-edge-rtep interface eth2.14
 set high-availability vrrp group sa-edge-rtep vrid 14
 set high-availability vrrp group sa-edge-rtep virtual-address 172.16.14.1/24
 set high-availability vrrp group sa-edge-rtep hello-source-address 172.16.14.2
@@ -32,14 +42,14 @@ set high-availability vrrp group sa-edge-rtep peer-address 172.16.14.3
 set high-availability vrrp group sa-edge-rtep no-preempt 
 set high-availability vrrp group sa-edge-rtep priority 100
 set high-availability vrrp group sa-esxi-tep no-preempt 
-set high-availability vrrp group sa-esxi-tep interface eth1.15
+set high-availability vrrp group sa-esxi-tep interface eth2.15
 set high-availability vrrp group sa-esxi-tep vrid 15
 set high-availability vrrp group sa-esxi-tep virtual-address 172.16.15.1/24
 set high-availability vrrp group sa-esxi-tep hello-source-address 172.16.15.2
 set high-availability vrrp group sa-esxi-tep peer-address 172.16.15.3
 set high-availability vrrp group sa-esxi-tep priority 100
 set high-availability vrrp group sa-edge-tep no-preempt 
-set high-availability vrrp group sa-edge-tep interface eth1.16
+set high-availability vrrp group sa-edge-tep interface eth2.16
 set high-availability vrrp group sa-edge-tep vrid 16
 set high-availability vrrp group sa-edge-tep virtual-address 172.16.16.1/24
 set high-availability vrrp group sa-edge-tep hello-source-address 172.16.16.2

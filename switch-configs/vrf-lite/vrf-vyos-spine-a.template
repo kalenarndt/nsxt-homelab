@@ -7,16 +7,26 @@ set system ntp server time.bmrf.io
 set system domain-name bmrf.io
 set system name-server 172.16.11.4
 set system name-server 172.16.11.5
-set system host-name vrf-vyos-spine-a
-set interfaces ethernet eth0 address '4.0.1.2/30'
-set interfaces ethernet eth0 description 'Spine-A to WAN Uplink'
-set interfaces ethernet eth0 mtu '9000'
+set system host-name vyos-vrf-spine-a
+set system login user vyos authentication plaintext-password VMware1!
+set vrf name oob-mgmt description "Out of Band Management Interface"
+set vrf name oob-mgmt table 101
+set vrf bind-to-all
+set interfaces ethernet eth0 mtu 1500
+set interfaces ethernet eth0 vif 11 "Out of Band Management VLAN"
+set interfaces ethernet eth0 vif 11 mtu 1500
+set interfaces ethernet eth0 vif 11 vrf oob-mgmt
+set interfaces ethernet eth0 vif 11 address 172.16.11.34/24
+set protocols vrf oob-mgmt static route 0.0.0.0/0 next-hop 172.16.11.1 next-hop-interface eth0.11
+set interfaces ethernet eth1 address '4.0.1.2/30'
+set interfaces ethernet eth1 description 'Spine-A to WAN Uplink'
 set interfaces ethernet eth1 mtu '9000'
-set interfaces ethernet eth1 description 'Spine-A to ToR-A Routed Link'
-set interfaces ethernet eth1 address '4.0.1.5/30' 
 set interfaces ethernet eth2 mtu '9000'
-set interfaces ethernet eth2 description 'Spine-A to ToR-B Routed Link'
-set interfaces ethernet eth2 address '4.0.1.9/30' 
+set interfaces ethernet eth2 description 'Spine-A to ToR-A Routed Link'
+set interfaces ethernet eth2 address '4.0.1.5/30' 
+set interfaces ethernet eth3 mtu '9000'
+set interfaces ethernet eth3 description 'Spine-A to ToR-B Routed Link'
+set interfaces ethernet eth3 address '4.0.1.9/30' 
 set protocols bfd peer '4.0.1.1'
 set protocols bfd peer '4.0.1.6'
 set protocols bfd peer '4.0.1.10'
