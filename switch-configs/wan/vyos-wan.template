@@ -1,0 +1,52 @@
+configure
+set service lldp interface all
+set service ssh port 22
+set service ssh listen-address 0.0.0.0
+set system domain-search domain bmrf.io
+set system ntp server time.bmrf.io
+set system domain-name bmrf.io
+set system name-server 172.16.11.4
+set system name-server 172.16.11.5
+set system host-name vyos-wan
+set system login user vyos authentication plaintext-password VMware1!
+set vrf name oob-mgmt description "Out of Band Management Interface"
+set vrf name oob-mgmt table 101
+set vrf bind-to-all
+set interfaces ethernet eth0 mtu 1500
+set interfaces ethernet eth0 vif 11 description 'Out of Band Management VLAN'
+set interfaces ethernet eth0 vif 11 mtu '1500'
+set interfaces ethernet eth0 vif 11 vrf oob-mgmt
+set interfaces ethernet eth0 vif 11 address '172.16.11.30/24'
+set protocols vrf oob-mgmt static route 0.0.0.0/0 next-hop 172.16.11.1 next-hop-interface eth0.11
+set interfaces ethernet eth1 vif 13 description "Unifi - WAN Transport VLAN"
+set interfaces ethernet eth1 vif 13 address 1.0.1.2/30 
+set interfaces ethernet eth1 vif 13 mtu '1500'
+set interfaces ethernet eth1 description 'WAN Uplink to Unifi Dream Machine'
+set interfaces ethernet eth1 mtu '1500'
+set interfaces ethernet eth2 mtu '9000'
+set interfaces ethernet eth2 description 'WAN Downlink to Site-A Spine-A Routed Link'
+set interfaces ethernet eth2 address '2.0.1.1/30' 
+set interfaces ethernet eth3 mtu '9000'
+set interfaces ethernet eth3 description 'WAN Downlink to Site-B Spine-A Routed Link'
+set interfaces ethernet eth3 address '3.0.1.1/30'
+set interfaces ethernet eth4 mtu '9000'
+set interfaces ethernet eth4 description 'WAN Downlink to VRF-Lite Spine-A Routed Link'
+set interfaces ethernet eth4 address '4.0.1.1/30' 
+set protocols bfd peer '2.0.1.2'
+set protocols bfd peer '3.0.1.2'
+set protocols bfd peer '4.0.1.2'
+set protocols bgp 65000 address-family ipv4-unicast redistribute connected
+set protocols bgp 65000 neighbor 2.0.1.2 remote-as 65100
+set protocols bgp 65000 neighbor 2.0.1.2 bfd
+set protocols bgp 65000 neighbor 2.0.1.2 address-family ipv4-unicast default-originate
+set protocols bgp 65000 neighbor 3.0.1.2 remote-as 65200
+set protocols bgp 65000 neighbor 3.0.1.2 bfd
+set protocols bgp 65000 neighbor 3.0.1.2 address-family ipv4-unicast default-originate
+set protocols bgp 65000 neighbor 4.0.1.2 remote-as 65300
+set protocols bgp 65000 neighbor 4.0.1.2 bfd
+set protocols bgp 65000 neighbor 4.0.1.2 address-family ipv4-unicast default-originate
+set protocols bgp 65000 parameters bestpath as-path multipath-relax
+set protocols static route 0.0.0.0/0 next-hop 1.0.1.1 next-hop-interface eth1
+commit
+save
+exit
