@@ -5,9 +5,9 @@
 #
 
 param(
-   [string]$vCenter = "your-vcenter",
+   [string]$vCenter = "vc.bmrf.io",
    [string]$username = "administrator@vsphere.local",
-   [string]$password = "VMware1!",
+   [string]$password = "VMware123!",
    [switch]$snapshot,
    [switch]$revert,
    [string]$vappname = "Federation",

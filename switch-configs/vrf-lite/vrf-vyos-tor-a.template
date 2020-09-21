@@ -18,6 +18,8 @@ set interfaces ethernet eth0 vif 11 mtu 1500
 set interfaces ethernet eth0 vif 11 vrf oob-mgmt
 set interfaces ethernet eth0 vif 11 address 172.16.11.35/24
 set protocols vrf oob-mgmt static route 0.0.0.0/0 next-hop 172.16.11.1 next-hop-interface eth0.11
+set system ntp vrf oob-mgmt
+set service ssh vrf oob-mgmt
 set interfaces ethernet eth1 address '4.0.1.6/30'
 set interfaces ethernet eth1 description 'ToR-A to Spine-A Uplink'
 set interfaces ethernet eth1 mtu '9000'
