@@ -29,10 +29,10 @@ variable "rp_mtu" {
 
 # Enter Edge Nodes Display Name. Required for external interfaces.
 variable "edge_node_1" {
-  default = "edge5-sa"
+  default = "edge1-sa"
 }
 variable "edge_node_2" {
-  default = "edge6-sa"
+  default = "edge2-sa"
 }
 
 

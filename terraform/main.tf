@@ -21,7 +21,7 @@ data "nsxt_policy_transport_zone" "vlan_tz" {
 }
 
 data "nsxt_policy_edge_cluster" "edge_cluster" {
-  display_name = "edge-cluster-tf"
+  display_name = "edge-cluster-t0"
 }
 
 data "nsxt_policy_service" "ssh" {
