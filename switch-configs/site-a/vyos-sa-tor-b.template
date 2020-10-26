@@ -3,6 +3,9 @@ set service lldp interface all
 set service ssh port 22
 set service ssh listen-address 0.0.0.0
 set system domain-search domain bmrf.io
+del system ntp server 0.pool.ntp.org
+del system ntp server 1.pool.ntp.org
+del system ntp server 2.pool.ntp.org
 set system ntp server time.bmrf.io
 set system domain-name bmrf.io
 set system name-server 172.16.11.4
