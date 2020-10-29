@@ -79,7 +79,7 @@ variable "t0_ecmp_peer_b" {
   default = "10.10.101.1"
 }
 ###################################################################
-########################## Segment Names ##########################
+######################### Segment Section #########################
 ###################################################################
 variable "overlay_segments" {
   description = "Create these overlay segments"
@@ -93,6 +93,27 @@ variable "overlay_ip" {
   default = ["172.16.10.1/24", "172.16.20.1/24", "172.16.30.1/24"]
 }
 
+variable "vlan_segments" {
+  description = "Create these vlan segments"
+  type = list(string)
+  default = ["seg-edge-fa-vl100", "seg-edge-fb-vl101"]
+}
+
+variable "vlan_segment_vlanid" {
+  description = "Create these vlan ids - Needs to match order of segments above"
+  type = list(string)
+  default = ["100", "101"]
+}
+
+variable "vlan_teaming_policies" {
+  description = "Assigns the teaming policies to the segments above - Needs to match order of segments above"
+  type = list(string)
+  default = ["uplink-1", "uplink-2"]
+}
+
+###################################################################
+######################### Security Groups #########################
+###################################################################
 # Security Group names.
 variable "nsx_group_web" {
   default = "Web Servers"

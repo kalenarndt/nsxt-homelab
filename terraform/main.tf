@@ -50,17 +50,26 @@ data "nsxt_policy_edge_node" "edge_node_2" {
 
 # Create NSX-T VLAN Segments
 resource "nsxt_policy_vlan_segment" "edge_peer_a" {
-  display_name        = "seg-fa-bgp-vl100"
-  description         = "VLAN Segment created by Terraform"
-  transport_zone_path = data.nsxt_policy_transport_zone.vlan_tz.path
-  vlan_ids            = ["100"]
+  display_name          = "seg-fa-bgp-vl100"
+  description           = "VLAN Segment created by Terraform"
+  transport_zone_path   = data.nsxt_policy_transport_zone.vlan_tz.path
+  vlan_ids              = ["100"]
+  
+  advanced_config {
+    uplink_teaming_policy = "uplink-1"
+  }
+
 }
 
 resource "nsxt_policy_vlan_segment" "edge_peer_b" {
-  display_name        = "seg-fb-bgp-vl101"
-  description         = "VLAN Segment created by Terraform"
-  transport_zone_path = data.nsxt_policy_transport_zone.vlan_tz.path
-  vlan_ids            = ["101"]
+  display_name          = "seg-fb-bgp-vl101"
+  description           = "VLAN Segment created by Terraform"
+  transport_zone_path   = data.nsxt_policy_transport_zone.vlan_tz.path
+  vlan_ids              = ["101"]
+
+  advanced_config {
+    uplink_teaming_policy = "uplink-2"
+  }
 }
 
 # Create Tier-0 Gateway
@@ -154,6 +163,37 @@ locals {
   )  
 }
 
+###################################################################
+########################## Prefix Lists ###########################
+###################################################################
+## Allows for filtering networks learned and networks advertised ##
+###################################################################
+resource "nsxt_policy_gateway_prefix_list" "ecmp_t0_prefix_in" {
+  display_name = "ecmp_t0_prefix_in"
+  gateway_path = nsxt_policy_tier0_gateway.tier0_gw.path
+
+  prefix {
+    action  = "PERMIT"
+    network = "0.0.0.0/0"
+  }
+  prefix {
+    action = "DENY"
+  }
+}
+
+resource "nsxt_policy_gateway_prefix_list" "ecmp_t0_prefix_out" {
+  display_name = "ecmp_t0_prefix_out"
+  gateway_path = nsxt_policy_tier0_gateway.tier0_gw.path
+
+  prefix {
+    action  = "PERMIT"
+    network = "172.16.0.0/16"
+  }
+  prefix {
+    action = "DENY"
+  }
+}
+
 # BGP Neighbor Configuration - ToR-A 
 resource "nsxt_policy_bgp_neighbor" "router_a" {
   display_name     = "ToR-A"
@@ -169,6 +209,13 @@ resource "nsxt_policy_bgp_neighbor" "router_a" {
     enabled  = true
     interval = 500
     multiple = 3
+  }
+
+  route_filtering {
+  address_family   = "IPV4"
+  maximum_routes   = 20
+  in_route_filter  = nsxt_policy_gateway_prefix_list.ecmp_t0_prefix_in.path
+  out_route_filter = nsxt_policy_gateway_prefix_list.ecmp_t0_prefix_out.path
   }
 }
 
@@ -188,6 +235,13 @@ resource "nsxt_policy_bgp_neighbor" "router_b" {
     enabled  = true
     interval = 500
     multiple = 3
+  }
+
+  route_filtering {
+  address_family   = "IPV4"
+  maximum_routes   = 20
+  in_route_filter  = nsxt_policy_gateway_prefix_list.ecmp_t0_prefix_in.path
+  out_route_filter = nsxt_policy_gateway_prefix_list.ecmp_t0_prefix_out.path
   }
 }
 
