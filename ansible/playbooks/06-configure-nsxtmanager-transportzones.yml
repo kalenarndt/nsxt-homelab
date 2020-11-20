@@ -1,0 +1,22 @@
+---
+- hosts: localhost
+  name: Create NSX-T Transport Zones
+  gather_facts: false
+  vars_files: ../answerfile.yml
+
+  tasks:
+    - name: Update NSX-T Default Transport Zone - VLAN 
+      nsxt_transport_zones:
+          hostname: "{{ nsxt_vip }}"
+          username: "{{ nsxt_admin_user }}"
+          password: "{{ nsxt_password }}"
+          validate_certs: "{{ nsxt_validate_certs }}"
+          resource_type: "TransportZone"
+          display_name: "{{ nsxt_transportzone_vlan_display_name }}"
+          description: "Ansible provisioned - Transport Zone - VLAN"
+          transport_type: "VLAN"
+          is_default: "true"
+          host_switch_mode: "STANDARD"
+          host_switch_name: "nsxHostSwitch"
+          uplink_teaming_policy_names: "{{ nsxt_uplink_teaming_policies }}"
+          state: "{{ state }}"

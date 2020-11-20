@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  name: Create NSX-T Edge Clusters
+  gather_facts: false
+  vars_files: ../answerfile.yml
+
+  tasks:
+    - name: Create Edge Cluster - {{ nsxt_edge_cluster_name_01 }}
+      nsxt_edge_clusters:
+        hostname: '{{ nsxt_vip }}'
+        username: '{{ nsxt_admin_user }}'
+        password: '{{ nsxt_password }}'
+        validate_certs: '{{ nsxt_validate_certs }}'
+        description: 'Ansible provisioned - Edge Cluster'
+        display_name: '{{ nsxt_edge_cluster_name_01 }}'
+        members:
+          - transport_node_name: '{{ nsxt_edge_01_name }}'
+          - transport_node_name: '{{ nsxt_edge_02_name }}'          
+        state: '{{ state }}'

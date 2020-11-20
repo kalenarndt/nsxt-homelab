@@ -1,0 +1,44 @@
+---
+- hosts: localhost
+  name: Create IP Pools
+  gather_facts: false
+  vars_files: ../answerfile.yml
+
+  tasks:
+    - name: Create IP Pool - {{ nsxt_compute_tep_pool_name }}
+      nsxt_policy_ip_pool:
+        hostname: '{{ nsxt_vip }}'
+        username: '{{ nsxt_admin_user }}'
+        password: '{{ nsxt_password }}'
+        validate_certs: '{{ nsxt_validate_certs }}'
+        display_name: '{{ nsxt_compute_tep_pool_name }}'
+        description: 'Ansible provisioned - IP Pool - TEP Compute'
+        state: '{{ state }}'
+        pool_static_subnets:
+          - id: '{{ nsxt_compute_tep_pool_name }}'
+            state: '{{ state }}'
+            allocation_ranges:
+              - start: '{{ nsxt_compute_tep_pool_start }}'
+                end: '{{ nsxt_compute_tep_pool_end }}'
+            cidr: '{{ nsxt_compute_tep_pool_cidr }}'
+            gateway_ip: '{{ nsxt_compute_tep_pool_gateway }}'
+
+    - name: Create IP Pool - {{ nsxt_edge_tep_pool_name }}
+      nsxt_policy_ip_pool:
+        hostname: '{{ nsxt_vip }}'
+        username: '{{ nsxt_admin_user }}'
+        password: '{{ nsxt_password }}'
+        validate_certs: '{{ nsxt_validate_certs }}'
+        display_name: '{{ nsxt_edge_tep_pool_name }}'
+        description: 'Ansible provisioned - IP Pool - TEP Edge'
+        state: '{{ state }}'
+        pool_static_subnets:
+          - id: '{{ nsxt_edge_tep_pool_name }}'
+            state: '{{ state }}'
+            allocation_ranges:
+              - start: '{{ nsxt_edge_tep_pool_start }}'
+                end: '{{ nsxt_edge_tep_pool_end }}'
+            cidr: '{{ nsxt_edge_tep_pool_cidr }}'
+            gateway_ip: '{{ nsxt_edge_tep_pool_gateway }}'
+
+

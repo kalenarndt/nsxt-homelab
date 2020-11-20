@@ -1,0 +1,131 @@
+# Variables to be used for an automated NSX-T Deployment. #
+# Ansibe Variable 
+state: "present"
+
+###################################################
+############ Common Network Details ###############
+###################################################
+domain: 'bmrf.io'
+nsxt_dns_servers: '172.16.11.2 172.16.11.3'
+nsxt_ntp_servers: 'time.bmrf.io'
+
+###################################################
+############ NSX-T Deployment Details #############
+###################################################
+nsxt_ova_file: '/mnt/y/VMware/nsxt/3.1/nsx-unified-appliance-3.1.0.0.0.17107171.ova'
+
+# I use a non nested vCenter to deploy my NSX-T Managers to. Change the nsxt_non_nested_vcenter to match your compute manager if you aren't doing this.
+nsxt_non_nested_vcenter_hostname: vc
+nsxt_datacenter: 'Black Mesa'
+nsxt_manager_compute_cluster: 'Compute'
+nsxt_ova_size: 'small'
+nsxt_hostname: 'nsxt-sb-lm1.bmrf.io'
+nsxt_virtual_machine_name: 'nsxt-sb-lm1'
+nsxt_ip_address: '172.16.21.14'
+nsxt_netmask: '255.255.255.0'
+nsxt_vip: '172.16.21.13'
+nsxt_gateway: '172.16.21.1'
+nsxt_role: 'NSX Manager'
+nsxt_port_group: 'Sector-B-VL21'
+nsxt_allow_ssh_root_login: 'True'
+nsxt_ssh_enabled: 'True'
+nsxt_manager_datastore: 'iSCSI'
+nsxt_audit_user: 'audit'
+nsxt_admin_user: 'admin'
+nsxt_license: 'xxxxx-xxxxx-xxxxx-xxxxx-xxxxx'
+
+
+###################################################
+####### NSX-T Fabric Configuration Details ########
+################################################### 
+
+# Compute Manager Section
+vcenter_hostname: 'vc-sb'
+vcenter_username: 'administrator@vsphere.local'
+nsxt_compute_manager_display_name: 'Sector-B vCenter'
+nsxt_compute_manager_origin_type: 'vCenter'
+nsxt_compute_manager_credential_type: 'UsernamePasswordLoginCredential'
+nsxt_validate_certs: False
+
+# Uplink Profile Section
+nsxt_edge_uplink_profile_name: 'up-edge-mtep'
+nsxt_compute_uplink_profile_name: 'up-esxi-mtep'
+nsxt_edge_uplink_profile_vlan: '20'
+nsxt_compute_uplink_profile_vlan: '19'
+nsxt_named_teaming_policy_name_01: 'tor-1'
+nsxt_named_teaming_policy_name_02: 'tor-2'
+nsxt_teaming_policy_edge_link01: 'fp-eth0'
+nsxt_teaming_policy_edge_link02: 'fp-eth1'
+nsxt_teaming_policy_esxi_link01: 'vmnic0'
+nsxt_teaming_policy_esxi_link02: 'vmnic1'
+nsxt_mtu: '9000'
+
+# Transport Zones Section
+nsxt_uplink_teaming_policies: ['tor-1', 'tor-2']
+nsxt_transportzone_vlan_display_name: 'nsx-vlan-transportzone'
+nsxt_transportzone_overlay_display_name: 'nsx-overlay-transportzone'
+
+# Transport Node Profile Section
+compute_vds_name: 'Sector-B VDS'
+nsxt_transportnode_profile_name: 'TNP-Compute'
+nsxt_vds_uplink1_name: 'Uplink 1'
+nsxt_vds_uplink2_name: 'Uplink 2'
+
+# Compute Cluser Section
+nsxt_compute_cluster_name: 'Compute'
+
+# IP Pool Section
+
+## Compute TEP Pool
+nsxt_compute_tep_pool_name: 'ip-esxi-tep'
+nsxt_compute_tep_pool_gateway: '172.16.19.1'
+nsxt_compute_tep_pool_cidr: '172.16.19.0/24'
+nsxt_compute_tep_pool_start: '172.16.19.5'
+nsxt_compute_tep_pool_end: '172.16.19.100'
+
+## Edge TEP Pool 
+nsxt_edge_tep_pool_name: 'ip-edge-tep'
+nsxt_edge_tep_pool_gateway: '172.16.20.1'
+nsxt_edge_tep_pool_cidr: '172.16.20.0/24'
+nsxt_edge_tep_pool_start: '172.16.20.5'
+nsxt_edge_tep_pool_end: '172.16.20.100'
+
+## Edge RTEP Pool
+nsxt_edge_rtep_pool_name: 'ip-edge-rtep'
+
+##################################################
+
+###################################################
+######## NSX-T Edge Configuration Details #########
+################################################### 
+
+# General Edge Configuration Details
+nsxt_edge_cluster_name: 'Compute'
+nsxt_edge_datastore: 'Sector-B-NFS'
+nsxt_edge_data_networks_tor_01: "trunk-tor-1"
+nsxt_edge_data_networks_tor_02: "trunk-tor-2"
+nsxt_edge_management_network: "Management-VL21"
+nsxt_edge_dns_server_1: '172.16.11.2'
+nsxt_edge_dns_server_2: '172.16.11.3'
+nsxt_edge_gateway: '172.16.21.1'
+nsxt_edge_prefix_length: '24'
+
+## Edge Node 1 Configuration Details
+nsxt_edge_01_name: 'edge01-sb'
+nsxt_edge_01_display_name: 'edge01-sb'
+nsxt_edge_01_ip: '172.16.21.17'
+nsxt_edge_01_size: 'SMALL' # Must be in all caps for whatever you use
+
+## Edge Node 2 Configuration Details
+nsxt_edge_02_name: 'edge02-sb'
+nsxt_edge_02_display_name: 'edge02-sb'
+nsxt_edge_02_ip: "172.16.21.18"
+nsxt_edge_02_size: 'SMALL' # Must be in all caps for whatever you use
+
+# If you need more edges add more variables and modify 10-deploy-edgenodes.yml with additional tasks.
+
+## Edge Cluster 1 Configuration Details
+nsxt_edge_cluster_name_01: 'edge-cluster-t0'
+
+
+

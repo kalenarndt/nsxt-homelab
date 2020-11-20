@@ -1,0 +1,35 @@
+---
+- hosts: localhost
+  name: Lab Deployment
+  gather_facts: false
+  vars_prompt:
+    - name: "vcenter_password"
+      prompt: "What is the vCenter Password? "
+      private: yes
+    - name: "nsxt_password"
+      prompt: "What is the NSXT Manager Password? "
+      private: yes
+
+
+  vars_files: answerfile.yml
+
+  tasks:
+    - name: setting fact
+      set_fact:
+        vcenter_password: "{{ vcenter_password }}"
+        nsxt_password: "{{ nsxt_password }}"        
+
+
+# Infrastructure Deployment # 
+
+- import_playbook: playbooks/01-deploy-nsxtmanager.yml
+- import_playbook: playbooks/02-configure-nsxtmanager-vip-eula.yml
+- import_playbook: playbooks/03-configure-nsxtmanager-license.yml
+- import_playbook: playbooks/04-configure-compute-manager.yml
+- import_playbook: playbooks/05-configure-nsxtmanager-uplinkprofiles.yml
+- import_playbook: playbooks/06-configure-nsxtmanager-transportzones.yml
+- import_playbook: playbooks/07-configure-nsxtmanager-ippools.yml
+- import_playbook: playbooks/08-configure-nsxtmanager-transportnodesprofiles.yml
+- import_playbook: playbooks/09-configure-nsxtmanager-transportnodes.yml
+- import_playbook: playbooks/10-deploy-edgenodes.yml
+- import_playbook: playbooks/11-configure-nsxtmanager-edgeclusters.yml

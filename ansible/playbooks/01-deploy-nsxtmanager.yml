@@ -1,0 +1,56 @@
+---
+- hosts: localhost
+  name: Deploy the NSX Manager to a vCenter environment
+  gather_facts: false
+  vars_files: ../answerfile.yml
+
+  tasks:
+    - name: Deploy NSX-T Manager OVA
+      vmware_deploy_ovf:
+        hostname: "{{ nsxt_non_nested_vcenter_hostname }}.{{ domain }}" # I use a non-nested vCenter to deploy my NSX Managers. Change variable 
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        name: "{{ nsxt_virtual_machine_name }}" # Virtual Machine name in ESXI, not FQDN
+        ovf: "{{ nsxt_ova_file }}"
+        wait_for_ip_address: true
+        validate_certs: no
+        inject_ovf_env: true
+        power_on: yes
+        datastore: "{{ nsxt_manager_datastore }}"
+        datacenter: "{{ nsxt_datacenter }}"
+        cluster: "{{ nsxt_manager_compute_cluster }}"
+        deployment_option: "{{ nsxt_ova_size }}"
+        networks: 
+          "Network 1": "{{ nsxt_port_group }}"
+        properties:
+          nsx_allow_ssh_root_login: "{{ nsxt_allow_ssh_root_login }}"
+          nsx_cli_audit_passwd_0: "{{ nsxt_password }}"
+          nsx_cli_audit_username: "{{ nsxt_audit_user }}"
+          nsx_cli_passwd_0: "{{ nsxt_password }}"
+          nsx_cli_username: "{{ nsxt_admin_user }}"
+          nsx_dns1_0: "{{ nsxt_dns_servers }}"
+          nsx_domain_0: "{{ domain }}"
+          nsx_gateway_0: "{{ nsxt_gateway }}"
+          nsx_hostname: "{{ nsxt_hostname }}"
+          nsx_ip_0: "{{ nsxt_ip_address }}"
+          nsx_isSSHEnabled: "{{ nsxt_ssh_enabled }}"
+          nsx_netmask_0: "{{ nsxt_netmask }}"
+          nsx_ntp_0: "{{ nsxt_ntp_servers }}"
+          nsx_passwd_0: "{{ nsxt_password }}"
+          nsx_role: "{{ nsxt_role }}"
+      delegate_to: localhost
+
+    - name: Check manager status
+      nsxt_manager_status:
+          hostname: "{{ nsxt_hostname }}"
+          username: "{{ nsxt_admin_user }}"
+          password: "{{ nsxt_password }}"
+          validate_certs: "{{ nsxt_validate_certs }}"
+          wait_time: 20
+    
+    - name: Pause a little bit
+      pause: 
+        minutes: 5
+      
+
+    

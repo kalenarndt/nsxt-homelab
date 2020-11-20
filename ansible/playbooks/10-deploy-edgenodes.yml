@@ -1,0 +1,134 @@
+---
+- hosts: localhost
+  name: Deploy and Configure NSX-T Edges
+  gather_facts: false
+  vars_files: ../answerfile.yml
+
+  tasks:
+    - name: Deploy and configure NSX-T Edge transport nodes - {{ nsxt_edge_01_name }}
+      nsxt_transport_nodes:
+        hostname: "{{ nsxt_vip }}"
+        username: "{{ nsxt_admin_user }}"
+        password: "{{ nsxt_password }}"
+        validate_certs: "{{ nsxt_validate_certs }}"
+        display_name: "{{ nsxt_edge_01_name }}"
+        description: "Edge transport node"
+        host_switch_spec:
+          resource_type: "StandardHostSwitchSpec"
+          host_switches:
+          - host_switch_profiles:
+            - name: "{{ nsxt_edge_uplink_profile_name }}"
+              type: "UplinkHostSwitchProfile"
+            host_switch_name: "nsxHostSwitch"
+            host_switch_mode: "STANDARD"
+            host_switch_type: "NVDS"
+            pnics:
+            - device_name: "{{ nsxt_teaming_policy_edge_link01 }}"
+              uplink_name: "{{ nsxt_teaming_policy_edge_link01 }}"
+            - device_name: "{{ nsxt_teaming_policy_edge_link02 }}"
+              uplink_name: "{{ nsxt_teaming_policy_edge_link02 }}"
+            ip_assignment_spec:
+              resource_type: "StaticIpPoolSpec"
+              ip_pool_name: "{{ nsxt_edge_tep_pool_name }}"
+            transport_zone_endpoints:
+              - transport_zone_name: "{{ nsxt_transportzone_overlay_display_name }}"
+              - transport_zone_name: "{{ nsxt_transportzone_vlan_display_name }}"
+        node_deployment_info:
+            resource_type: "EdgeNode"
+            display_name: "{{ nsxt_edge_01_display_name }}"
+            ip_addresses:
+            deployment_config:
+              form_factor: "{{ nsxt_edge_01_size }}"
+              node_user_settings:
+                cli_password: "{{ nsxt_password }}"
+                root_password: "{{ nsxt_password }}"
+              vm_deployment_config:
+                allow_ssh_root_login: "{{ nsxt_allow_ssh_root_login }}"
+                enable_ssh: "{{ nsxt_ssh_enabled }}"
+                placement_type: VsphereDeploymentConfig
+                vc_name: "{{ nsxt_compute_manager_display_name }}"
+                vc_username: "{{ vcenter_username }}"
+                vc_password: "{{ vcenter_password }}" 
+                dns_servers:
+                - '{{ nsxt_edge_dns_server_1 }}'
+                - '{{ nsxt_edge_dns_server_2 }}'
+                ntp_servers:
+                - '{{ nsxt_ntp_servers }}'                       
+                data_networks:
+                - "{{ nsxt_edge_data_networks_tor_01 }}"
+                - "{{ nsxt_edge_data_networks_tor_02 }}"
+                management_network: "{{ nsxt_edge_management_network }}"
+                management_port_subnets:
+                - ip_addresses:
+                  - "{{ nsxt_edge_01_ip }}"
+                  prefix_length: '{{ nsxt_edge_prefix_length }}'
+                default_gateway_addresses:
+                  - "{{ nsxt_edge_gateway }}"
+                hostname: "{{ nsxt_edge_01_display_name }}"
+                compute: "{{ nsxt_edge_cluster_name }}"
+                storage: "{{ nsxt_edge_datastore }}"
+        state: '{{ state }}'
+
+    - name: Deploy and configure NSX-T Edge transport nodes - {{ nsxt_edge_02_name }}
+      nsxt_transport_nodes:
+        hostname: "{{ nsxt_vip }}"
+        username: "{{ nsxt_admin_user }}"
+        password: "{{ nsxt_password }}"
+        validate_certs: "{{ nsxt_validate_certs }}"
+        display_name: "{{ nsxt_edge_02_name }}"
+        description: "Edge transport node"
+        host_switch_spec:
+          resource_type: "StandardHostSwitchSpec"
+          host_switches:
+          - host_switch_profiles:
+            - name: "{{ nsxt_edge_uplink_profile_name }}"
+              type: "UplinkHostSwitchProfile"
+            host_switch_name: "nsxHostSwitch"
+            host_switch_mode: "STANDARD"
+            host_switch_type: "NVDS"
+            pnics:
+            - device_name: "{{ nsxt_teaming_policy_edge_link01 }}"
+              uplink_name: "{{ nsxt_teaming_policy_edge_link01 }}"
+            - device_name: "{{ nsxt_teaming_policy_edge_link02 }}"
+              uplink_name: "{{ nsxt_teaming_policy_edge_link02 }}"
+            ip_assignment_spec:
+              resource_type: "StaticIpPoolSpec"
+              ip_pool_name: "{{ nsxt_edge_tep_pool_name }}"
+            transport_zone_endpoints:
+              - transport_zone_name: "{{ nsxt_transportzone_overlay_display_name }}"
+              - transport_zone_name: "{{ nsxt_transportzone_vlan_display_name }}"
+        node_deployment_info:
+            resource_type: "EdgeNode"
+            display_name: "{{ nsxt_edge_02_display_name }}"
+            ip_addresses:
+            deployment_config:
+              form_factor: "{{ nsxt_edge_02_size }}"
+              node_user_settings:
+                cli_password: "{{ nsxt_password }}"
+                root_password: "{{ nsxt_password }}"
+              vm_deployment_config:
+                allow_ssh_root_login: "{{ nsxt_allow_ssh_root_login }}"
+                enable_ssh: "{{ nsxt_ssh_enabled }}"
+                placement_type: VsphereDeploymentConfig
+                vc_name: "{{ nsxt_compute_manager_display_name }}"
+                vc_username: "{{ vcenter_username }}"
+                vc_password: "{{ vcenter_password }}" 
+                dns_servers:
+                - '{{ nsxt_edge_dns_server_1 }}'
+                - '{{ nsxt_edge_dns_server_2 }}'
+                ntp_servers:
+                - '{{ nsxt_ntp_servers }}'                       
+                data_networks:
+                - "{{ nsxt_edge_data_networks_tor_01 }}"
+                - "{{ nsxt_edge_data_networks_tor_02 }}"
+                management_network: "{{ nsxt_edge_management_network }}"
+                management_port_subnets:
+                - ip_addresses:
+                  - "{{ nsxt_edge_02_ip }}"
+                  prefix_length: '{{ nsxt_edge_prefix_length }}'
+                default_gateway_addresses:
+                  - "{{ nsxt_edge_gateway }}"
+                hostname: "{{ nsxt_edge_02_display_name }}"
+                compute: "{{ nsxt_edge_cluster_name }}"
+                storage: "{{ nsxt_edge_datastore }}"
+        state: '{{ state }}'

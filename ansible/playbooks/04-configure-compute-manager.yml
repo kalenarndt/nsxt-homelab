@@ -1,0 +1,21 @@
+---
+- hosts: localhost
+  name: Register vCenter as a Compute Manager in NSX-T
+  gather_facts: false
+  vars_files: ../answerfile.yml
+
+  tasks:
+    - name: Register Compute Manager - {{ vcenter_hostname }}.{{ domain }}
+      nsxt_fabric_compute_managers:
+          hostname: "{{ nsxt_vip }}"
+          username: "{{ nsxt_admin_user }}"
+          password: "{{ nsxt_password }}"
+          validate_certs: "{{ nsxt_validate_certs }}"
+          display_name: "{{ nsxt_compute_manager_display_name }}"
+          server: "{{ vcenter_hostname }}.{{ domain }}"
+          origin_type: "vCenter"
+          credential:
+            credential_type: "UsernamePasswordLoginCredential"
+            username: "{{ vcenter_username }}"
+            password: "{{ vcenter_password }}"
+          state: "{{ state }}"
