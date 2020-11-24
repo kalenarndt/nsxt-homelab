@@ -2,48 +2,69 @@ configure
 set service lldp interface all
 set service ssh port 22
 set service ssh listen-address 0.0.0.0
+set system domain-search domain bmrf.io
+del system ntp server 0.pool.ntp.org
+del system ntp server 1.pool.ntp.org
+del system ntp server 2.pool.ntp.org
+set system ntp server time.bmrf.io
+set system domain-name bmrf.io
+set system name-server 172.16.11.2
+set system name-server 172.16.11.3
 set system host-name vyos-sb-tor-a
-set interfaces ethernet eth0 address '3.0.1.6/30'
-set interfaces ethernet eth0 description 'ToR-A to Spine-A Uplink'
-set interfaces ethernet eth0 mtu '1700'
-set interfaces ethernet eth1 mtu '1700'
-set interfaces ethernet eth1 vif 110 description 'ToR-A to NSX Edge Downlink'
-set interfaces ethernet eth1 vif 110 mtu 1700
-set interfaces ethernet eth1 vif 110 address '10.10.110.1/28' 
-set interfaces ethernet eth1 vif 24 description 'ToR-A VRRP Edge RTEP'
-set interfaces ethernet eth1 vif 24 mtu 1700
-set interfaces ethernet eth1 vif 24 address '172.16.24.2/24' 
-set interfaces ethernet eth1 vif 25 description 'ToR-A VRRP ESXi TEP'
-set interfaces ethernet eth1 vif 25 mtu 1700
-set interfaces ethernet eth1 vif 25 address '172.16.25.2/24' 
-set interfaces ethernet eth1 vif 26 description 'ToR-A VRRP Edge TEP'
-set interfaces ethernet eth1 vif 26 mtu 1700
-set interfaces ethernet eth1 vif 26 address '172.16.26.2/24' 
-set high-availability vrrp group sa-edge-rtep interface eth1.24
-set high-availability vrrp group sa-edge-rtep vrid 24
-set high-availability vrrp group sa-edge-rtep virtual-address 172.16.24.1/24
-set high-availability vrrp group sa-edge-rtep hello-source-address 172.16.24.2
-set high-availability vrrp group sa-edge-rtep peer-address 172.16.24.3
+set system login user vyos authentication plaintext-password VMware1!
+set vrf name oob-mgmt description "Out of Band Management Interface"
+set vrf name oob-mgmt table 101
+set vrf bind-to-all
+set interfaces ethernet eth0 mtu 1500
+set interfaces ethernet eth0 vif 21 description "Out of Band Management VLAN"
+set interfaces ethernet eth0 vif 21 mtu 1500
+set interfaces ethernet eth0 vif 21 vrf oob-mgmt
+set interfaces ethernet eth0 vif 21 address 172.16.21.51/24
+set protocols vrf oob-mgmt static route 0.0.0.0/0 next-hop 172.16.21.1 next-hop-interface eth0.21
+set system ntp vrf oob-mgmt
+set interfaces ethernet eth1 address '3.0.1.6/30'
+set interfaces ethernet eth1 description 'ToR-A to Spine-A Uplink'
+set interfaces ethernet eth1 mtu '9000'
+set interfaces ethernet eth2 mtu '9000'
+set interfaces ethernet eth2 vif 110 description 'ToR-A to NSX Edge Downlink'
+set interfaces ethernet eth2 vif 110 mtu 9000
+set interfaces ethernet eth2 vif 110 address '10.10.110.1/28' 
+set interfaces ethernet eth2 vif 18 description 'ToR-A VRRP Edge RTEP'
+set interfaces ethernet eth2 vif 18 mtu 9000
+set interfaces ethernet eth2 vif 18 address '172.16.18.2/24' 
+set interfaces ethernet eth2 vif 19 description 'ToR-A VRRP ESXi TEP'
+set interfaces ethernet eth2 vif 19 mtu 9000
+set interfaces ethernet eth2 vif 19 address '172.16.19.2/24' 
+set interfaces ethernet eth2 vif 18 description 'ToR-A VRRP Edge TEP'
+set interfaces ethernet eth2 vif 18 mtu 9000
+set interfaces ethernet eth2 vif 18 address '172.16.18.2/24' 
+set interfaces ethernet eth3 address '3.0.2.1/30'
+set interfaces ethernet eth3 mtu 9000
+set high-availability vrrp group sa-edge-rtep interface eth3
+set high-availability vrrp group sa-edge-rtep vrid 18
+set high-availability vrrp group sa-edge-rtep virtual-address 172.16.18.1/24
+set high-availability vrrp group sa-edge-rtep hello-source-address 3.0.2.1
+set high-availability vrrp group sa-edge-rtep peer-address 3.0.2.2
 set high-availability vrrp group sa-edge-rtep no-preempt 
 set high-availability vrrp group sa-edge-rtep priority 100
 set high-availability vrrp group sa-esxi-tep no-preempt 
-set high-availability vrrp group sa-esxi-tep interface eth1.25
-set high-availability vrrp group sa-esxi-tep vrid 25
-set high-availability vrrp group sa-esxi-tep virtual-address 172.16.25.1/24
-set high-availability vrrp group sa-esxi-tep hello-source-address 172.16.25.2
-set high-availability vrrp group sa-esxi-tep peer-address 172.16.25.3
+set high-availability vrrp group sa-esxi-tep interface eth3
+set high-availability vrrp group sa-esxi-tep vrid 19
+set high-availability vrrp group sa-esxi-tep virtual-address 172.16.19.1/24
+set high-availability vrrp group sa-esxi-tep hello-source-address 3.0.2.1
+set high-availability vrrp group sa-esxi-tep peer-address 3.0.2.2
 set high-availability vrrp group sa-esxi-tep priority 100
 set high-availability vrrp group sa-edge-tep no-preempt 
-set high-availability vrrp group sa-edge-tep interface eth1.26
-set high-availability vrrp group sa-edge-tep vrid 26
-set high-availability vrrp group sa-edge-tep virtual-address 172.16.26.1/24
-set high-availability vrrp group sa-edge-tep hello-source-address 172.16.26.2
-set high-availability vrrp group sa-edge-tep peer-address 172.16.26.3
+set high-availability vrrp group sa-edge-tep interface eth3
+set high-availability vrrp group sa-edge-tep vrid 20
+set high-availability vrrp group sa-edge-tep virtual-address 172.16.20.1/24
+set high-availability vrrp group sa-edge-tep hello-source-address 3.0.2.1
+set high-availability vrrp group sa-edge-tep peer-address 3.0.2.2
 set high-availability vrrp group sa-edge-tep priority 200
 set protocols bfd peer '3.0.1.5'
 set protocols bfd peer '10.10.110.2'
 set protocols bfd peer '10.10.110.3'
-set protocols bgp 65210 neighbor 3.0.1.5 remote-as 65100
+set protocols bgp 65210 neighbor 3.0.1.5 remote-as 65200
 set protocols bgp 65210 neighbor 3.0.1.5 bfd
 set protocols bgp 65210 neighbor 10.10.110.2 remote-as 65120
 set protocols bgp 65210 neighbor 10.10.110.2 bfd
