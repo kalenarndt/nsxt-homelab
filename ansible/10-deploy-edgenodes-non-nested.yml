@@ -25,7 +25,7 @@
           "Network 1": "{{ nsxt_edge_trunka_port_group }}"
           "Network 2": "{{ nsxt_edge_trunkb_port_group }}"    
         properties:
-          nsx_allow_ssh_root_login: "{{ nsxt_allow_ssh_root_login }}"
+          nsx_allowSSHRootLogin: "{{ nsxt_allow_ssh_root_login }}"
           nsx_cli_audit_passwd_0: "{{ nsxt_password }}"
           nsx_cli_audit_username: "{{ nsxt_audit_user }}"
           nsx_cli_passwd_0: "{{ nsxt_password }}"
