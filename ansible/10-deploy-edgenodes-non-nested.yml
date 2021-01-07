@@ -1,0 +1,97 @@
+---
+- hosts: localhost
+  name: Deploy the NSX-T Edges to the non-nested vCenter environment.
+  gather_facts: false
+  vars_files: ../answerfile.yml
+
+  tasks:
+    - name: Deploy {{ nsxt_edge_01_name}} OVA
+      vmware_deploy_ovf:
+        hostname: "{{ nsxt_non_nested_vcenter_hostname }}.{{ domain }}" # I use a non-nested vCenter to deploy my NSX Managers. Change variable 
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        name: "{{ nsxt_edge_01_name }}" # Virtual Machine name in ESXI, not FQDN
+        ovf: "{{ nsxt_edge_ova_file }}"
+        wait_for_ip_address: true
+        validate_certs: no
+        inject_ovf_env: true
+        power_on: yes
+        datastore: "{{ nsxt_manager_datastore }}"
+        datacenter: "{{ nsxt_datacenter }}"
+        cluster: "{{ nsxt_manager_compute_cluster }}"
+        deployment_option: "{{ nsxt_ova_size }}"
+        networks: 
+          "Network 0": "{{ nsxt_edge_management_network }}"
+          "Network 1": "{{ nsxt_edge_trunka_port_group }}"
+          "Network 2": "{{ nsxt_edge_trunkb_port_group }}"    
+        properties:
+          nsx_allow_ssh_root_login: "{{ nsxt_allow_ssh_root_login }}"
+          nsx_cli_audit_passwd_0: "{{ nsxt_password }}"
+          nsx_cli_audit_username: "{{ nsxt_audit_user }}"
+          nsx_cli_passwd_0: "{{ nsxt_password }}"
+          nsx_cli_username: "{{ nsxt_admin_user }}"
+          nsx_dns1_0: "{{ nsxt_dns_servers }}"
+          nsx_domain_0: "{{ domain }}"
+          nsx_gateway_0: "{{ nsxt_edge_gateway }}"
+          nsx_hostname: "{{ nsxt_edge_01_name }}.{{ domain }}"
+          nsx_ip_0: "{{ nsxt_edge_01_ip }}"
+          nsx_isSSHEnabled: "{{ nsxt_ssh_enabled }}"
+          nsx_netmask_0: "{{ nsxt_netmask }}"
+          nsx_ntp_0: "{{ nsxt_ntp_servers }}"
+          nsx_passwd_0: "{{ nsxt_password }}"
+      delegate_to: localhost
+
+    - name: Deploy {{ nsxt_edge_02_name}} OVA
+      vmware_deploy_ovf:
+        hostname: "{{ nsxt_non_nested_vcenter_hostname }}.{{ domain }}" # I use a non-nested vCenter to deploy my NSX Managers. Change variable 
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        name: "{{ nsxt_edge_02_name }}" # Virtual Machine name in ESXI, not FQDN
+        ovf: "{{ nsxt_edge_ova_file }}"
+        wait_for_ip_address: true
+        validate_certs: no
+        inject_ovf_env: true
+        power_on: yes
+        datastore: "{{ nsxt_manager_datastore }}"
+        datacenter: "{{ nsxt_datacenter }}"
+        cluster: "{{ nsxt_manager_compute_cluster }}"
+        deployment_option: "{{ nsxt_ova_size }}"
+        networks: 
+          "Network 0": "{{ nsxt_edge_management_network }}"
+          "Network 1": "{{ nsxt_edge_trunka_port_group }}"
+          "Network 2": "{{ nsxt_edge_trunkb_port_group }}"    
+        properties:
+          nsx_allow_ssh_root_login: "{{ nsxt_allow_ssh_root_login }}"
+          nsx_cli_audit_passwd_0: "{{ nsxt_password }}"
+          nsx_cli_audit_username: "{{ nsxt_audit_user }}"
+          nsx_cli_passwd_0: "{{ nsxt_password }}"
+          nsx_cli_username: "{{ nsxt_admin_user }}"
+          nsx_dns1_0: "{{ nsxt_dns_servers }}"
+          nsx_domain_0: "{{ domain }}"
+          nsx_gateway_0: "{{ nsxt_edge_gateway }}"
+          nsx_hostname: "{{ nsxt_edge_02_name }}.{{ domain }}"
+          nsx_ip_0: "{{ nsxt_edge_02_ip }}"
+          nsx_isSSHEnabled: "{{ nsxt_ssh_enabled }}"
+          nsx_netmask_0: "{{ nsxt_netmask }}"
+          nsx_ntp_0: "{{ nsxt_ntp_servers }}"
+          nsx_passwd_0: "{{ nsxt_password }}"
+      delegate_to: localhost
+
+
+    - name: Get API thumbprint from {{ nsxt_hostname }}
+      command: su - admin -c "get certificate api thumbprint"
+      delegate_to: '{{ nsxt_hostname }}'
+      vars:
+        ansible_user: root
+        ansible_password: "{{ nsxt_password }}"
+      register: nsxt_manager_thumbprint
+
+    - name: Join NSX Edges to NSX Manager
+      command: su - admin -c "join management-plane {{ nsxt_ip_address }} username admin password "{{ nsxt_password }}" thumbprint {{ nsxt_manager_thumbprint.stdout }}"
+      delegate_to: '{{ nsxt_edge_01_ip }}'
+      vars:
+        ansible_user: root
+        ansible_password: "{{ nsxt_password }}"
+      with_items:
+        - "{{ nsxt_edge_01_ip }}"
+        - "{{ nsxt_edge_02_ip }}"

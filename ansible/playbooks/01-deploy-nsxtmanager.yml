@@ -10,8 +10,8 @@
         hostname: "{{ nsxt_non_nested_vcenter_hostname }}.{{ domain }}" # I use a non-nested vCenter to deploy my NSX Managers. Change variable 
         username: "{{ vcenter_username }}"
         password: "{{ vcenter_password }}"
-        name: "{{ nsxt_virtual_machine_name }}" # Virtual Machine name in ESXI, not FQDN
-        ovf: "{{ nsxt_ova_file }}"
+        name: "{{ nsxt_manager_virtual_machine_name }}" # Virtual Machine name in ESXI, not FQDN
+        ovf: "{{ nsxt_manager_ova_file }}"
         wait_for_ip_address: true
         validate_certs: no
         inject_ovf_env: true
@@ -23,7 +23,7 @@
         networks: 
           "Network 1": "{{ nsxt_port_group }}"
         properties:
-          nsx_allow_ssh_root_login: "{{ nsxt_allow_ssh_root_login }}"
+          nsx_allowSSHRootLogin: "{{ nsxt_allow_ssh_root_login }}"
           nsx_cli_audit_passwd_0: "{{ nsxt_password }}"
           nsx_cli_audit_username: "{{ nsxt_audit_user }}"
           nsx_cli_passwd_0: "{{ nsxt_password }}"

@@ -1,0 +1,24 @@
+---
+- hosts: localhost
+  name: Deploy the NSX-T Edges to the non-nested vCenter environment.
+  gather_facts: false
+  vars_files: ../answerfile-sa.yml
+
+  tasks:
+    - name: Get API thumbprint from {{ nsxt_hostname }}
+      command: su - admin -c "get certificate api thumbprint"
+      delegate_to: '{{ nsxt_hostname }}'
+      vars:
+        ansible_user: root
+        ansible_password: "VMware123!VMware123!"
+      register: nsxt_manager_thumbprint
+
+    - name: Join NSX Edges to NSX Manager
+      command: su - admin -c "join management-plane {{ nsxt_ip_address }} username admin password "{{ nsxt_password }}" thumbprint {{ nsxt_manager_thumbprint.stdout }}"
+      delegate_to: '{{ nsxt_edge_01_ip }}'
+      vars:
+        ansible_user: root
+        ansible_password: "VMware123!VMware123!"
+      with_items:
+        - "{{ nsxt_edge_01_ip }}"
+        - "{{ nsxt_edge_02_ip }}"
