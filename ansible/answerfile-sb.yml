@@ -1,4 +1,4 @@
-# Variables to be used for an automated NSX-T Deployment. #
+# Variables to be used for an automated NSX-T Deployment for Site-B. #
 # Ansibe Variable 
 state: "present"
 
