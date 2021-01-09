@@ -7,7 +7,7 @@
   tasks:
     - name: Configure NSX-T Manager VIP
       nsxt_virtual_ip:
-          hostname: "{{ nsxt_hostname }}"
+          hostname: "{{ nsxt_manager_hostname }}"
           username: "{{ nsxt_admin_user }}"
           password: "{{ nsxt_password }}"
           validate_certs: "{{ nsxt_validate_certs }}"

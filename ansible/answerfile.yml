@@ -20,7 +20,7 @@ nsxt_non_nested_vcenter_hostname: vc
 nsxt_datacenter: 'Black Mesa'
 nsxt_manager_compute_cluster: 'Compute'
 nsxt_ova_size: 'small'
-nsxt_hostname: 'nsxt-sa-lm1.bmrf.io'
+nsxt_manager_hostname: 'nsxt-sa-lm1.bmrf.io'
 nsxt_manager_virtual_machine_name: 'nsxt-sa-lm1'
 nsxt_ip_address: '172.16.17.14'
 nsxt_netmask: '255.255.255.0'
@@ -34,6 +34,7 @@ nsxt_manager_datastore: 'iSCSI'
 nsxt_audit_user: 'audit'
 nsxt_admin_user: 'admin'
 nsxt_license: 'xxxxx-xxxxx-xxxxx-xxxxx-xxxxx'
+nsxt_password: 'VMware123!VMware123!'
 
 
 ###################################################

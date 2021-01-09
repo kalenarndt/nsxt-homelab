@@ -14,6 +14,6 @@
         description: 'Ansible provisioned - Edge Cluster'
         display_name: '{{ nsxt_edge_cluster_name_01 }}'
         members:
-          - transport_node_name: '{{ nsxt_edge_01_name }}'
-          - transport_node_name: '{{ nsxt_edge_02_name }}'          
+          - transport_node_name: '{{ nsxt_edge_01_name }}.{{ domain }}'
+          - transport_node_name: '{{ nsxt_edge_02_name }}.{{ domain }}'          
         state: '{{ state }}'

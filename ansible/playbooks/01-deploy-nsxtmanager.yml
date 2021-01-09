@@ -31,7 +31,7 @@
           nsx_dns1_0: "{{ nsxt_dns_servers }}"
           nsx_domain_0: "{{ domain }}"
           nsx_gateway_0: "{{ nsxt_gateway }}"
-          nsx_hostname: "{{ nsxt_hostname }}"
+          nsx_hostname: "{{ nsxt_manager_hostname }}"
           nsx_ip_0: "{{ nsxt_ip_address }}"
           nsx_isSSHEnabled: "{{ nsxt_ssh_enabled }}"
           nsx_netmask_0: "{{ nsxt_netmask }}"
@@ -42,7 +42,7 @@
 
     - name: Check manager status
       nsxt_manager_status:
-          hostname: "{{ nsxt_hostname }}"
+          hostname: "{{ nsxt_manager_hostname }}"
           username: "{{ nsxt_admin_user }}"
           password: "{{ nsxt_password }}"
           validate_certs: "{{ nsxt_validate_certs }}"

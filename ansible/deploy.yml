@@ -6,9 +6,6 @@
     - name: "vcenter_password"
       prompt: "What is the vCenter Password? "
       private: yes
-    - name: "nsxt_password"
-      prompt: "What is the NSXT Manager Password? "
-      private: yes
 
 
   vars_files: answerfile.yml

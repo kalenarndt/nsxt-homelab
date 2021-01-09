@@ -61,7 +61,7 @@
           "Network 1": "{{ nsxt_edge_trunka_port_group }}"
           "Network 2": "{{ nsxt_edge_trunkb_port_group }}"    
         properties:
-          nsx_allow_ssh_root_login: "{{ nsxt_allow_ssh_root_login }}"
+          nsx_allowSSHRootLogin: "{{ nsxt_allow_ssh_root_login }}"
           nsx_cli_audit_passwd_0: "{{ nsxt_password }}"
           nsx_cli_audit_username: "{{ nsxt_audit_user }}"
           nsx_cli_passwd_0: "{{ nsxt_password }}"
@@ -77,21 +77,25 @@
           nsx_passwd_0: "{{ nsxt_password }}"
       delegate_to: localhost
 
+    - name: Wait a few minutes for the Edges to come up
+      pause: 
+        minutes: 5
 
-    - name: Get API thumbprint from {{ nsxt_hostname }}
+    - name: Get API thumbprint from {{ nsxt_manager_hostname }}
       command: su - admin -c "get certificate api thumbprint"
-      delegate_to: '{{ nsxt_hostname }}'
+      delegate_to: '{{ nsxt_manager_hostname }}'
       vars:
         ansible_user: root
         ansible_password: "{{ nsxt_password }}"
       register: nsxt_manager_thumbprint
 
-    - name: Join NSX Edges to NSX Manager
+    - name: Join NSX Edge {{ nsxt_edge_02_name }} to NSX Manager
       command: su - admin -c "join management-plane {{ nsxt_ip_address }} username admin password "{{ nsxt_password }}" thumbprint {{ nsxt_manager_thumbprint.stdout }}"
-      delegate_to: '{{ nsxt_edge_01_ip }}'
+      delegate_to: '{{ nsxt_edge_02_ip }}'
       vars:
         ansible_user: root
         ansible_password: "{{ nsxt_password }}"
-      with_items:
-        - "{{ nsxt_edge_01_ip }}"
-        - "{{ nsxt_edge_02_ip }}"
+
+    - name: Manual Edge Config Task
+      pause:
+        prompt: "Go into the NSX-T UI and configure the NSX-T Edges. Hit enter when done to proceed"
