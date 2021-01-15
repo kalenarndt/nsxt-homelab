@@ -89,6 +89,13 @@
         ansible_password: "{{ nsxt_password }}"
       register: nsxt_manager_thumbprint
 
+    - name: Join NSX Edge {{ nsxt_edge_01_name }} to NSX Manager
+      command: su - admin -c "join management-plane {{ nsxt_ip_address }} username admin password "{{ nsxt_password }}" thumbprint {{ nsxt_manager_thumbprint.stdout }}"
+      delegate_to: '{{ nsxt_edge_01_ip }}'
+      vars:
+        ansible_user: root
+        ansible_password: "{{ nsxt_password }}"
+
     - name: Join NSX Edge {{ nsxt_edge_02_name }} to NSX Manager
       command: su - admin -c "join management-plane {{ nsxt_ip_address }} username admin password "{{ nsxt_password }}" thumbprint {{ nsxt_manager_thumbprint.stdout }}"
       delegate_to: '{{ nsxt_edge_02_ip }}'
