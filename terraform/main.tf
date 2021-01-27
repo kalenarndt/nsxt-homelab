@@ -56,7 +56,7 @@ resource "nsxt_policy_vlan_segment" "edge_peer_a" {
   vlan_ids              = ["100"]
   
   advanced_config {
-    uplink_teaming_policy = "uplink-1"
+    uplink_teaming_policy = "tor-1"
   }
 
 }
@@ -68,7 +68,7 @@ resource "nsxt_policy_vlan_segment" "edge_peer_b" {
   vlan_ids              = ["101"]
 
   advanced_config {
-    uplink_teaming_policy = "uplink-2"
+    uplink_teaming_policy = "tor-2"
   }
 }
 

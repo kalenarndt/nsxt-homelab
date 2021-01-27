@@ -29,10 +29,10 @@ variable "rp_mtu" {
 
 # Enter Edge Nodes Display Name. Required for external interfaces.
 variable "edge_node_1" {
-  default = "edge1-sa"
+  default = "edge01-sa.bmrf.io"
 }
 variable "edge_node_2" {
-  default = "edge2-sa"
+  default = "edge02-sa.bmrf.io"
 }
 
 
@@ -108,7 +108,7 @@ variable "vlan_segment_vlanid" {
 variable "vlan_teaming_policies" {
   description = "Assigns the teaming policies to the segments above - Needs to match order of segments above"
   type = list(string)
-  default = ["uplink-1", "uplink-2"]
+  default = ["tor-1", "tor-2"]
 }
 
 ###################################################################

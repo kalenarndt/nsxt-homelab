@@ -133,3 +133,19 @@ nsxt_edge_cluster_name_01: 'edge-cluster-t0'
 
 
 
+######################################################
+######## NSX-T Site-A Global Manager Details #########
+######################################################
+
+nsxt_non_nested_vcenter_hostname: vc
+nsxt_global_manager_sa_compute_cluster: 'Compute'
+nsxt_global_manager_sa_ova_size: 'small'
+nsxt_global_manager_sa_hostname: 'nsxt-sa-gm1.bmrf.io'
+nsxt_global_manager_sa_virtual_machine_name: 'nsxt-sa-gm1'
+nsxt_global_manager_sa_ip_address: '172.16.17.16'
+nsxt_global_manager_sa_netmask: '255.255.255.0'
+nsxt_global_manager_sa_vip: '172.16.17.15'
+nsxt_global_manager_sa_gateway: '172.16.17.1'
+nsxt_global_manager_role: 'NSX Global Manager'
+nsxt_global_manager_sa_port_group: 'Sector-A-VL17'
+nsxt_global_manager_datastore: 'iSCSI'

@@ -29,3 +29,4 @@
 - import_playbook: playbooks/09-configure-nsxtmanager-transportnodes.yml
 - import_playbook: playbooks/10-deploy-edgenodes-non-nested.yml
 - import_playbook: playbooks/11-configure-nsxtmanager-edgeclusters.yml
+- import_playbook: playbooks/12-deploy-nsxtglobal-manager.yml
