@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  name: Configure NSX-T Global Manager VIP and Accept EULA
+  gather_facts: false
+  vars_files: ../answerfile.yml
+
+  tasks:
+# Marks the NSX-T Global Manager on Site-A as the active cluster
+    - name: Make the NSX-T Global Manager on Site-A active
+      nsxt_global_manager_enable_service:
+        hostname: "{{ nsxt_global_manager_sa_vip }}"
+        username: "{{ nsxt_admin_user }}"
+        password: "{{ nsxt_password }}"
+        id: "{{ nsxt_global_manager_sa_site_name }}"
+        validate_certs: "{{ nsxt_validate_certs }}"

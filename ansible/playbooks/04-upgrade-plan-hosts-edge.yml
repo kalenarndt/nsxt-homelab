@@ -1,0 +1,30 @@
+---
+- hosts: localhost
+  name: Initiate Update of Update Plans
+  gather_facts: false
+  vars_files: ../answerfile.yml
+  tasks:
+    - name: Update upgrade plan for Hosts
+      nsxt_upgrade_plan:
+        hostname: "{{ nsxt_vip }}"
+        username: "{{ nsxt_admin_user }}"
+        password: "{{ nsxt_password }}"
+        validate_certs: "{{ validate_certs }}"
+        component_type: 'host'
+        parallel: False
+        pause_after_each_group: False
+        pause_on_error: True
+        state: "{{ state }}"
+        
+    - name: Update upgrade plan for Edges
+      nsxt_upgrade_plan:
+        hostname: "{{ nsxt_vip }}"
+        username: "{{ nsxt_admin_user }}"
+        password: "{{ nsxt_password }}"
+        validate_certs: "{{ validate_certs }}"
+        component_type: 'edge'
+        parallel: False
+        pause_after_each_group: False
+        pause_on_error: True
+        state: "{{ state }}"
+    

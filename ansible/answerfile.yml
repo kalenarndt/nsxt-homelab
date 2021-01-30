@@ -1,6 +1,7 @@
 # Variables to be used for an automated NSX-T Deployment. #
 # Ansibe Variable 
 state: "present"
+validate_certs: no
 
 ###################################################
 ############ Common Network Details ###############
@@ -149,3 +150,9 @@ nsxt_global_manager_sa_gateway: '172.16.17.1'
 nsxt_global_manager_role: 'NSX Global Manager'
 nsxt_global_manager_sa_port_group: 'Sector-A-VL17'
 nsxt_global_manager_datastore: 'iSCSI'
+nsxt_global_manager_sa_site_name: 'Sector-A'
+
+######################################################
+########### NSX-T Upgrade Section Details ############
+######################################################
+nsxt_upgrade_mub_url: 'http://172.16.0.10:8081/VMware/nsxt/3.1.1/VMware-NSX-upgrade-bundle-3.1.1.0.0.17483185.mub'

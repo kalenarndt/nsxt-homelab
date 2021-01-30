@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  name: Initiate Upgrade
+  gather_facts: false
+  vars_files: ../answerfile.yml
+  tasks:
+    - name: Running Upgrade
+      nsxt_upgrade_run:
+        hostname: "{{ nsxt_vip }}"
+        username: "{{ nsxt_admin_user }}"
+        password: "{{ nsxt_password }}"
+        validate_certs: "{{ validate_certs }}"
+        paused_upgrade: False

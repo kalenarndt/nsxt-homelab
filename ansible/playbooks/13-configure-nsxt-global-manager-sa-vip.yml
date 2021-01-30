@@ -1,0 +1,36 @@
+---
+- hosts: localhost
+  name: Configure NSX-T Global Manager VIP and Accept EULA
+  gather_facts: false
+  vars_files: ../answerfile.yml
+
+  tasks:
+    - name: Configure NSX-T Global Manager VIP
+      nsxt_virtual_ip:
+          hostname: "{{ nsxt_global_manager_sa_ip_address }}"
+          username: "{{ nsxt_admin_user }}"
+          password: "{{ nsxt_password }}"
+          validate_certs: "{{ nsxt_validate_certs }}"
+          virtual_ip_address: "{{ nsxt_global_manager_sa_vip }}"
+          state: "{{ state }}"
+
+ # Checks that the NSX Manager is available prior to proceeding
+    - name: Check NSX-T Global Manager VIP Status
+      nsxt_manager_status:
+          hostname: "{{ nsxt_global_manager_sa_vip }}"
+          username: "{{ nsxt_admin_user }}"
+          password: "{{ nsxt_password }}"
+          validate_certs: "{{ nsxt_validate_certs }}"
+          wait_time: 10
+
+    - name: Pause for NSX-T Global Manager VIP to come up
+      pause: 
+        minutes: 5
+
+# Accepts the NSX-T Manager EULA
+    - name: Accept NSX-T EULA
+      nsxt_accept_eula:
+          hostname: "{{ nsxt_global_manager_sa_vip }}"
+          username: "{{ nsxt_admin_user }}"
+          password: "{{ nsxt_password }}"
+          validate_certs: "{{ nsxt_validate_certs }}"
