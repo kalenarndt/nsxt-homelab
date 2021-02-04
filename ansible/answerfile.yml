@@ -138,7 +138,7 @@ nsxt_edge_cluster_name_01: 'edge-cluster-t0'
 ######## NSX-T Site-A Global Manager Details #########
 ###################################################### 
 
-nsxt_non_nested_vcenter_hostname: vc
+
 nsxt_global_manager_sa_compute_cluster: 'Compute'
 nsxt_global_manager_sa_ova_size: 'small'
 nsxt_global_manager_sa_hostname: 'nsxt-sa-gm1.bmrf.io'
@@ -156,7 +156,6 @@ nsxt_global_manager_sa_site_name: 'Sector-A'
 ######## NSX-T Site-B Global Manager Details #########
 ###################################################### 
 
-nsxt_non_nested_vcenter_hostname: vc
 nsxt_global_manager_sa_compute_cluster: 'Compute'
 nsxt_global_manager_sa_ova_size: 'small'
 nsxt_global_manager_sa_hostname: 'nsxt-sb-gm1.bmrf.io'
