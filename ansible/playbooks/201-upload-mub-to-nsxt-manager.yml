@@ -6,7 +6,7 @@
   tasks:
     - name: Upload MUB to NSX-T Manager
       nsxt_upgrade_upload_mub:
-        hostname: "{{  nsxt_vip  }}"
+        hostname: "{{  nsxt_sa_vip  }}"
         username: "{{  nsxt_admin_user  }}"
         password: "{{  nsxt_password  }}"
         validate_certs: "{{ validate_certs }}"

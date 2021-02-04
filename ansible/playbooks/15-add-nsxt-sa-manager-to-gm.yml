@@ -1,0 +1,37 @@
+---
+- hosts: localhost
+  name: Configure NSX-T Global Manager VIP and Accept EULA
+  gather_facts: false
+  vars_files: ../answerfile.yml
+
+  tasks:
+# Retrieve the SSL thumbprint on the NSX-T Manager on Site-A
+    - name: Get API thumbprint from {{ nsxt_sa_manager_hostname }}
+      command: su - admin -c "get certificate cluster thumbprint"
+      delegate_to: '{{ nsxt_sa_manager_hostname }}'
+      vars:
+        ansible_user: root
+        ansible_password: "{{ nsxt_password }}"
+      register: nsxt_manager_thumbprint
+
+# Add the Local Manager site to the Global Manager
+    - name: Add "{{ nsxt_sa_vip_fqdn }}"
+      nsxt_rest:
+          hostname: "{{ nsxt_global_manager_sa_vip }}"
+          username: "{{ nsxt_admin_user }}"
+          password: "{{ nsxt_password }}"
+          validate_certs: "{{ nsxt_validate_certs }}"
+          method: put
+          path: "/global-manager/api/v1/global-infra/sites/{{ nsxt_lm_sa_display_name }}"
+          content:
+            {
+              "display_name": "{{ nsxt_lm_sa_display_name }}",
+              "site_connection_info": [
+                {
+                  "fqdn": "{{ nsxt_sa_vip_fqdn }}",
+                  "username": "{{  nsxt_admin_user }}",
+                  "password": "{{ nsxt_password  }}",
+                  "thumbprint": "{{ nsxt_manager_thumbprint.stdout }}"
+                }
+              ]
+            }

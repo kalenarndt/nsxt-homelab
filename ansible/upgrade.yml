@@ -2,25 +2,13 @@
 - hosts: localhost
   name: Lab Upgrade
   gather_facts: false
-  vars_prompt:
-    - name: "vcenter_password"
-      prompt: "What is the vCenter Password? "
-      private: yes
-
-
   vars_files: answerfile.yml
-
-  tasks:
-    - name: setting fact
-      set_fact:
-        vcenter_password: "{{ vcenter_password }}"
-        nsxt_password: "{{ nsxt_password }}"        
-
+ 
 
 # Infrastructure Deployment # 
-- import_playbook: playbooks/01-upload-mub-to-nsxt-manager.yml
-- import_playbook: playbooks/02-accept-upgrade-eula.yml
-- import_playbook: playbooks/03-upgrade-upgrade-coordinator.yml
-- import_playbook: playbooks/04-upgrade-plan-hosts-edge.yml
-- import_playbook: playbooks/05-upgrade-run-pre-checks.yml
-- import_playbook: playbooks/06-upgrade-run.yml
+- import_playbook: playbooks/201-upload-mub-to-nsxt-manager.yml
+- import_playbook: playbooks/202-accept-upgrade-eula.yml
+- import_playbook: playbooks/203-upgrade-upgrade-coordinator.yml
+- import_playbook: playbooks/204-upgrade-plan-hosts-edge.yml
+- import_playbook: playbooks/205-upgrade-run-pre-checks.yml
+- import_playbook: playbooks/206-upgrade-run.yml

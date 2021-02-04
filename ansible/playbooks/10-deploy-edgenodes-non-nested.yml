@@ -81,9 +81,9 @@
       pause: 
         minutes: 5
 
-    - name: Get API thumbprint from {{ nsxt_manager_hostname }}
+    - name: Get API thumbprint from {{ nsxt_manager_sa_hostname }}
       command: su - admin -c "get certificate api thumbprint"
-      delegate_to: '{{ nsxt_manager_hostname }}'
+      delegate_to: '{{ nsxt_manager_sa_hostname }}'
       vars:
         ansible_user: root
         ansible_password: "{{ nsxt_password }}"

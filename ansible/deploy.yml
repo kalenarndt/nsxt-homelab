@@ -20,17 +20,17 @@
 ############################################################
 ######### NSX-T Infrastructure Playbooks Section  ##########
 ############################################################ 
-#- import_playbook: playbooks/deploy/01-deploy-nsxtmanager.yml
-#- import_playbook: playbooks/deploy/02-configure-nsxtmanager-vip-eula.yml
-#- import_playbook: playbooks/deploy/03-configure-nsxtmanager-license.yml
-#- import_playbook: playbooks/deploy/04-configure-compute-manager.yml
-#- import_playbook: playbooks/deploy/05-configure-nsxtmanager-uplinkprofiles.yml
-#- import_playbook: playbooks/deploy/06-configure-nsxtmanager-transportzones.yml
-#- import_playbook: playbooks/deploy/07-configure-nsxtmanager-ippools.yml
-#- import_playbook: playbooks/deploy/08-configure-nsxtmanager-transportnodesprofiles.yml
-#- import_playbook: playbooks/deploy/09-configure-nsxtmanager-transportnodes.yml
-#- import_playbook: playbooks/deploy/10-deploy-edgenodes-non-nested.yml
-#- import_playbook: playbooks/deploy/11-configure-nsxtmanager-edgeclusters.yml
+- import_playbook: playbooks/deploy/01-deploy-nsxtmanager.yml
+- import_playbook: playbooks/deploy/02-configure-nsxtmanager-vip-eula.yml
+- import_playbook: playbooks/deploy/03-configure-nsxtmanager-license.yml
+- import_playbook: playbooks/deploy/04-configure-compute-manager.yml
+- import_playbook: playbooks/deploy/05-configure-nsxtmanager-uplinkprofiles.yml
+- import_playbook: playbooks/deploy/06-configure-nsxtmanager-transportzones.yml
+- import_playbook: playbooks/deploy/07-configure-nsxtmanager-ippools.yml
+- import_playbook: playbooks/deploy/08-configure-nsxtmanager-transportnodesprofiles.yml
+- import_playbook: playbooks/deploy/09-configure-nsxtmanager-transportnodes.yml
+- import_playbook: playbooks/deploy/10-deploy-edgenodes-non-nested.yml
+- import_playbook: playbooks/deploy/11-configure-nsxtmanager-edgeclusters.yml
 
 ############################################################
 #########    NSX-T Federation Playbooks Section   ##########
@@ -38,4 +38,4 @@
 #- import_playbook: playbooks/deploy/12-deploy-nsxt-global-manager-sa.yml
 #- import_playbook: playbooks/13-configure-nsxt-global-manager-sa-vip.yml
 #- import_playbook: playbooks/14-configure-nsxt-global-manager-sa-active.yml
-
+#- import_playbook: playbooks/14-configure-nsxt-global-manager-sa-active.yml

@@ -28,9 +28,26 @@
         minutes: 5
 
 # Accepts the NSX-T Manager EULA
-    - name: Accept NSX-T EULA
+    - name: Accept NSX-T Global Manager EULA
       nsxt_accept_eula:
           hostname: "{{ nsxt_global_manager_sa_vip }}"
           username: "{{ nsxt_admin_user }}"
           password: "{{ nsxt_password }}"
           validate_certs: "{{ nsxt_validate_certs }}"
+
+# Disables NSX-T CEIP
+    - name: Disable NSX-T Global Manager Telemetry 
+      nsxt_rest:
+          hostname: "{{ nsxt_global_manager_sa_vip }}"
+          username: "{{ nsxt_admin_user }}"
+          password: "{{ nsxt_password }}"
+          validate_certs: "{{ nsxt_validate_certs }}"
+          method: put
+          path: /api/v1/telemetry/agreement
+          content:
+            {
+              "_revision": 1,
+              "id": "TelemetryAgreementIdentifier",
+              "resource_type": "TelemetryAgreement",
+              "telemetry_agreement_displayed": true
+            }
