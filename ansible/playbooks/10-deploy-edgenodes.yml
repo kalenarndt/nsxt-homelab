@@ -11,7 +11,7 @@
         username: "{{ nsxt_admin_user }}"
         password: "{{ nsxt_password }}"
         validate_certs: "{{ nsxt_validate_certs }}"
-        display_name: "{{ nsxt_edge_01_name }}"
+        display_name: "{{ nsxt_edge_01_name }}.{{ domain }}"
         description: "Edge transport node"
         host_switch_spec:
           resource_type: "StandardHostSwitchSpec"
@@ -35,7 +35,7 @@
               - transport_zone_name: "{{ nsxt_transportzone_vlan_display_name }}"
         node_deployment_info:
             resource_type: "EdgeNode"
-            display_name: "{{ nsxt_edge_01_display_name }}"
+            display_name: "{{ nsxt_edge_01_name }}.{{ domain }}"
             ip_addresses:
             deployment_config:
               form_factor: "{{ nsxt_edge_01_size }}"
@@ -55,8 +55,8 @@
                 ntp_servers:
                 - '{{ nsxt_ntp_servers }}'                       
                 data_networks:
-                - "{{ nsxt_edge_data_networks_tor_01 }}"
-                - "{{ nsxt_edge_data_networks_tor_02 }}"
+                - "{{ nsxt_edge_trunka_port_group }}"
+                - "{{ nsxt_edge_trunkb_port_group }}"
                 management_network: "{{ nsxt_edge_management_network }}"
                 management_port_subnets:
                 - ip_addresses:
@@ -64,7 +64,7 @@
                   prefix_length: '{{ nsxt_edge_prefix_length }}'
                 default_gateway_addresses:
                   - "{{ nsxt_edge_gateway }}"
-                hostname: "{{ nsxt_edge_01_display_name }}"
+                hostname: "{{ nsxt_edge_01_name }}.{{ domain }}"
                 compute: "{{ nsxt_edge_cluster_name }}"
                 storage: "{{ nsxt_edge_datastore }}"
         state: '{{ state }}'
@@ -75,7 +75,7 @@
         username: "{{ nsxt_admin_user }}"
         password: "{{ nsxt_password }}"
         validate_certs: "{{ nsxt_validate_certs }}"
-        display_name: "{{ nsxt_edge_02_name }}"
+        display_name: "{{ nsxt_edge_02_name }}.{{ domain }}"
         description: "Edge transport node"
         host_switch_spec:
           resource_type: "StandardHostSwitchSpec"
@@ -99,7 +99,7 @@
               - transport_zone_name: "{{ nsxt_transportzone_vlan_display_name }}"
         node_deployment_info:
             resource_type: "EdgeNode"
-            display_name: "{{ nsxt_edge_02_display_name }}"
+            display_name: "{{ nsxt_edge_02_name }}.{{ domain }}"
             ip_addresses:
             deployment_config:
               form_factor: "{{ nsxt_edge_02_size }}"
@@ -119,8 +119,8 @@
                 ntp_servers:
                 - '{{ nsxt_ntp_servers }}'                       
                 data_networks:
-                - "{{ nsxt_edge_data_networks_tor_01 }}"
-                - "{{ nsxt_edge_data_networks_tor_02 }}"
+                - "{{ nsxt_edge_trunka_port_group }}"
+                - "{{ nsxt_edge_trunkb_port_group }}"
                 management_network: "{{ nsxt_edge_management_network }}"
                 management_port_subnets:
                 - ip_addresses:
@@ -128,7 +128,7 @@
                   prefix_length: '{{ nsxt_edge_prefix_length }}'
                 default_gateway_addresses:
                   - "{{ nsxt_edge_gateway }}"
-                hostname: "{{ nsxt_edge_02_display_name }}"
+                hostname: "{{ nsxt_edge_02_name }}.{{ domain }}"
                 compute: "{{ nsxt_edge_cluster_name }}"
                 storage: "{{ nsxt_edge_datastore }}"
         state: '{{ state }}'

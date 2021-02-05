@@ -105,8 +105,6 @@ nsxt_edge_rtep_pool_name: 'ip-edge-rtep'
 # General Edge Configuration Details
 nsxt_edge_cluster_name: 'Compute'
 nsxt_edge_datastore: 'Sector-A-NFS'
-nsxt_edge_data_networks_tor_01: "trunk-tor-1"
-nsxt_edge_data_networks_tor_02: "trunk-tor-2"
 nsxt_edge_management_network: "Sector-A-VL17"
 nsxt_edge_trunka_port_group: 'Edge-Trunk-SA-A'
 nsxt_edge_trunkb_port_group: 'Edge-Trunk-SA-B'
@@ -117,13 +115,11 @@ nsxt_edge_prefix_length: '24'
 
 ## Edge Node 1 Configuration Details
 nsxt_edge_01_name: 'edge01-sa'
-nsxt_edge_01_display_name: 'edge01-sa'
 nsxt_edge_01_ip: '172.16.17.17'
 nsxt_edge_01_size: 'SMALL' # Must be in all caps for whatever you use
 
 ## Edge Node 2 Configuration Details
 nsxt_edge_02_name: 'edge02-sa'
-nsxt_edge_02_display_name: 'edge02-sa'
 nsxt_edge_02_ip: "172.16.17.18"
 nsxt_edge_02_size: 'SMALL' # Must be in all caps for whatever you use
 
@@ -156,18 +152,18 @@ nsxt_global_manager_sa_site_name: 'Sector-A'
 ######## NSX-T Site-B Global Manager Details #########
 ###################################################### 
 
-nsxt_global_manager_sa_compute_cluster: 'Compute'
-nsxt_global_manager_sa_ova_size: 'small'
-nsxt_global_manager_sa_hostname: 'nsxt-sb-gm1.bmrf.io'
-nsxt_global_manager_sa_virtual_machine_name: 'nsxt-sb-gm1'
-nsxt_global_manager_sa_ip_address: '172.16.17.16'
-nsxt_global_manager_sa_netmask: '255.255.255.0'
-nsxt_global_manager_sa_vip: '172.16.17.15'
-nsxt_global_manager_sa_gateway: '172.16.17.1'
+nsxt_global_manager_sb_compute_cluster: 'Compute'
+nsxt_global_manager_sb_ova_size: 'small'
+nsxt_global_manager_sb_hostname: 'nsxt-sb-gm1.bmrf.io'
+nsxt_global_manager_sb_virtual_machine_name: 'nsxt-sb-gm1'
+nsxt_global_manager_sb_ip_address: '172.16.17.16'
+nsxt_global_manager_sb_netmask: '255.255.255.0'
+nsxt_global_manager_sb_vip: '172.16.17.15'
+nsxt_global_manager_sb_gateway: '172.16.17.1'
 nsxt_global_manager_role: 'NSX Global Manager'
-nsxt_global_manager_sa_port_group: 'Sector-A-VL17'
+nsxt_global_manager_sb_port_group: 'Sector-A-VL17'
 nsxt_global_manager_datastore: 'iSCSI'
-nsxt_global_manager_sa_site_name: 'Sector-A'
+nsxt_global_manager_sb_site_name: 'Sector-A'
 
 
 ######################################################

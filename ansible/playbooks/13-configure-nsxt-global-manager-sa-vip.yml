@@ -46,7 +46,7 @@
           path: /api/v1/telemetry/agreement
           content:
             {
-              "_revision": 1,
+              "_revision": 0,
               "id": "TelemetryAgreementIdentifier",
               "resource_type": "TelemetryAgreement",
               "telemetry_agreement_displayed": true
