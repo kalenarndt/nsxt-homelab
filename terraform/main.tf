@@ -269,15 +269,16 @@ resource "nsxt_policy_tier1_gateway" "tier1_gw" {
 }
 
 # Create NSX-T Overlay Segments
+# Moved to support for_each statements
 resource "nsxt_policy_segment" "tf_segments" {
-  count               = length(var.overlay_segments)
-  display_name        = var.overlay_segments[count.index]
+  for_each = var.overlay_ip_map
+  display_name        = each.key
   description         = "Segment created by Terraform"
   transport_zone_path = data.nsxt_policy_transport_zone.overlay_tz.path
   connectivity_path   = nsxt_policy_tier1_gateway.tier1_gw.path
 
   subnet {
-    cidr = var.overlay_ip[count.index]
+    cidr = each.value
   }
 }
 

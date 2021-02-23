@@ -87,11 +87,16 @@ variable "overlay_segments" {
   default = ["TF-Segment-App", "TF-Segment-Web", "TF-Segment-DB"]
 }
 
-variable "overlay_ip" {
-  description = "Create these IPs - Needs to match order of segments above"
-  type = list(string)
-  default = ["172.16.10.1/24", "172.16.20.1/24", "172.16.30.1/24"]
+
+variable "overlay_ip_map" {
+  type = map
+  default = {
+    "TF-Segment-Web" = "172.16.20.1/24"
+    "TF-Segment-App" = "172.16.10.1/24"
+    "TF-Segment-DB" = "172.16.30.1/24"
+  }
 }
+
 
 variable "vlan_segments" {
   description = "Create these vlan segments"
