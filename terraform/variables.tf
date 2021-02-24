@@ -6,11 +6,11 @@ variable "nsx_manager" {
 
 # Username & Password for NSX-T Manager
 variable "username" {
-  default = "admin"
+  type = string
 }
 
 variable "password" {
-  default = "VMware123!VMware123!"
+  type = string
 }
 
 # Transport Zones - Required to build Overlay and VLAN based constructs 
@@ -83,37 +83,37 @@ variable "t0_ecmp_peer_b" {
 ###################################################################
 variable "overlay_segments" {
   description = "Create these overlay segments"
-  type = list(string)
-  default = ["TF-Segment-App", "TF-Segment-Web", "TF-Segment-DB"]
+  type        = list(string)
+  default     = ["TF-Segment-App", "TF-Segment-Web", "TF-Segment-DB"]
 }
 
 
 variable "overlay_ip_map" {
-  type = map
+  type = map(any)
   default = {
     "TF-Segment-Web" = "172.16.20.1/24"
     "TF-Segment-App" = "172.16.10.1/24"
-    "TF-Segment-DB" = "172.16.30.1/24"
+    "TF-Segment-DB"  = "172.16.30.1/24"
   }
 }
 
 
 variable "vlan_segments" {
   description = "Create these vlan segments"
-  type = list(string)
-  default = ["seg-edge-fa-vl100", "seg-edge-fb-vl101"]
+  type        = list(string)
+  default     = ["seg-edge-fa-vl100", "seg-edge-fb-vl101"]
 }
 
 variable "vlan_segment_vlanid" {
   description = "Create these vlan ids - Needs to match order of segments above"
-  type = list(string)
-  default = ["100", "101"]
+  type        = list(string)
+  default     = ["100", "101"]
 }
 
 variable "vlan_teaming_policies" {
   description = "Assigns the teaming policies to the segments above - Needs to match order of segments above"
-  type = list(string)
-  default = ["tor-1", "tor-2"]
+  type        = list(string)
+  default     = ["tor-1", "tor-2"]
 }
 
 ###################################################################
@@ -121,15 +121,15 @@ variable "vlan_teaming_policies" {
 ###################################################################
 # Security Group names.
 variable "nsx_group_web" {
-  default = "Web Servers"
+  type = string
 }
 
 variable "nsx_group_app" {
-  default = "App Servers"
+  type = string
 }
 
 variable "nsx_group_db" {
-  default = "DB Servers"
+  type = string
 }
 
 variable "nsx_group_blue" {

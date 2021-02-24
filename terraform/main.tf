@@ -1,15 +1,3 @@
-# NSX-T Manager Credentials
-provider "nsxt" {
-  host                  = var.nsx_manager
-  username              = var.username
-  password              = var.password
-  allow_unverified_ssl  = true
-  max_retries           = 10
-  retry_min_delay       = 500
-  retry_max_delay       = 5000
-  retry_on_status_codes = [429]
-}
-
 # Data Sources we need for reference later
 data "nsxt_policy_transport_zone" "overlay_tz" {
   display_name = var.overlay_tz
@@ -50,11 +38,11 @@ data "nsxt_policy_edge_node" "edge_node_2" {
 
 # Create NSX-T VLAN Segments
 resource "nsxt_policy_vlan_segment" "edge_peer_a" {
-  display_name          = "seg-fa-bgp-vl100"
-  description           = "VLAN Segment created by Terraform"
-  transport_zone_path   = data.nsxt_policy_transport_zone.vlan_tz.path
-  vlan_ids              = ["100"]
-  
+  display_name        = "seg-fa-bgp-vl100"
+  description         = "VLAN Segment created by Terraform"
+  transport_zone_path = data.nsxt_policy_transport_zone.vlan_tz.path
+  vlan_ids            = ["100"]
+
   advanced_config {
     uplink_teaming_policy = "tor-1"
   }
@@ -62,10 +50,10 @@ resource "nsxt_policy_vlan_segment" "edge_peer_a" {
 }
 
 resource "nsxt_policy_vlan_segment" "edge_peer_b" {
-  display_name          = "seg-fb-bgp-vl101"
-  description           = "VLAN Segment created by Terraform"
-  transport_zone_path   = data.nsxt_policy_transport_zone.vlan_tz.path
-  vlan_ids              = ["101"]
+  display_name        = "seg-fb-bgp-vl101"
+  description         = "VLAN Segment created by Terraform"
+  transport_zone_path = data.nsxt_policy_transport_zone.vlan_tz.path
+  vlan_ids            = ["101"]
 
   advanced_config {
     uplink_teaming_policy = "tor-2"
@@ -96,7 +84,7 @@ resource "nsxt_policy_tier0_gateway" "tier0_gw" {
       name  = "t0-route-redistribution"
       types = ["TIER1_LB_VIP", "TIER1_CONNECTED", "TIER1_SERVICE_INTERFACE", "TIER1_NAT", "TIER1_LB_SNAT"]
     }
-  }  
+  }
 }
 
 # Create Tier-0 Gateway Uplink Interfaces
@@ -160,7 +148,7 @@ locals {
   peer_b_source_addresses = concat(
     nsxt_policy_tier0_gateway_interface.rp_en1_fb.ip_addresses,
     nsxt_policy_tier0_gateway_interface.rp_en2_fb.ip_addresses
-  )  
+  )
 }
 
 ###################################################################
@@ -212,10 +200,10 @@ resource "nsxt_policy_bgp_neighbor" "router_a" {
   }
 
   route_filtering {
-  address_family   = "IPV4"
-  maximum_routes   = 20
-  in_route_filter  = nsxt_policy_gateway_prefix_list.ecmp_t0_prefix_in.path
-  out_route_filter = nsxt_policy_gateway_prefix_list.ecmp_t0_prefix_out.path
+    address_family   = "IPV4"
+    maximum_routes   = 20
+    in_route_filter  = nsxt_policy_gateway_prefix_list.ecmp_t0_prefix_in.path
+    out_route_filter = nsxt_policy_gateway_prefix_list.ecmp_t0_prefix_out.path
   }
 }
 
@@ -238,10 +226,10 @@ resource "nsxt_policy_bgp_neighbor" "router_b" {
   }
 
   route_filtering {
-  address_family   = "IPV4"
-  maximum_routes   = 20
-  in_route_filter  = nsxt_policy_gateway_prefix_list.ecmp_t0_prefix_in.path
-  out_route_filter = nsxt_policy_gateway_prefix_list.ecmp_t0_prefix_out.path
+    address_family   = "IPV4"
+    maximum_routes   = 20
+    in_route_filter  = nsxt_policy_gateway_prefix_list.ecmp_t0_prefix_in.path
+    out_route_filter = nsxt_policy_gateway_prefix_list.ecmp_t0_prefix_out.path
   }
 }
 
@@ -271,7 +259,7 @@ resource "nsxt_policy_tier1_gateway" "tier1_gw" {
 # Create NSX-T Overlay Segments
 # Moved to support for_each statements
 resource "nsxt_policy_segment" "tf_segments" {
-  for_each = var.overlay_ip_map
+  for_each            = var.overlay_ip_map
   display_name        = each.key
   description         = "Segment created by Terraform"
   transport_zone_path = data.nsxt_policy_transport_zone.overlay_tz.path
