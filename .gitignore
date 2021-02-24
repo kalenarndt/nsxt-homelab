@@ -1,5 +1,6 @@
 scripts/lab-vapp-snapshot.ps1
-terraform/*
+terraform/.terraform/*
+.terraform.lock.hcl
 *.exe
 *.tfstate
 *.backup
