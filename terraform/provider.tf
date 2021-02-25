@@ -1,12 +1,3 @@
-terraform {
-  required_providers {
-    nsxt = {
-      source  = "vmware/nsxt"
-      version = "3.1.1"
-    }
-  }
-}
-
 # NSX-T Manager Credentials
 provider "nsxt" {
   host                  = var.nsx_manager
@@ -18,4 +9,3 @@ provider "nsxt" {
   retry_max_delay       = 5000
   retry_on_status_codes = [429]
 }
-s
