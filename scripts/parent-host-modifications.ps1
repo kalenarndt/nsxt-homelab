@@ -13,8 +13,6 @@ Connect-VIServer -Server $vCenter -User $username -Password $password
 # we should specify either -s or -o
 
 
-Connect-VIServer vc.bmrf.io
-
 $esxHosts = Get-VMHost | Sort Name
 foreach($esx in $esxHosts){
       Write-Host "Disabling PageShare Salting on $esx"
