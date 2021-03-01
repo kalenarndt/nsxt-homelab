@@ -1,5 +1,5 @@
 #
-# Configures homelab to disable huge pages, salting, and allows hyperthreading between vms
+# Configures homelab to disable large pages, salting, and allows hyperthreading between vms
 # 
 #
 
